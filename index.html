@@ -15,11 +15,10 @@
       --border: #e5e7eb;
       --blue: #2563eb;
       --blue2: #1d4ed8;
-      --green: #22c55e;
-      --greenDark: #16a34a;
-      --red: #ef4444;
-      --yellow: #facc15;
-      --purple: #a855f7;
+      --green: #16a34a;
+      --red: #dc2626;
+      --yellow: #f59e0b;
+      --purple: #7c3aed;
       --orange: #f97316;
       --radius: 18px;
       --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
@@ -163,7 +162,7 @@
     }
 
     .btn.green {
-      background: var(--greenDark);
+      background: var(--green);
     }
 
     .btn.red {
@@ -284,15 +283,15 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 1000px;
+      min-width: 1250px;
     }
 
     th,
     td {
-      padding: 11px;
+      padding: 10px;
       border-bottom: 1px solid var(--border);
       text-align: left;
-      font-size: 14px;
+      font-size: 13px;
       vertical-align: middle;
     }
 
@@ -307,6 +306,20 @@
 
     tr:hover td {
       background: #f8fafc;
+    }
+
+    .mini-input {
+      min-width: 100px;
+      padding: 8px;
+      border-radius: 9px;
+      font-size: 13px;
+    }
+
+    .mini-select {
+      min-width: 110px;
+      padding: 8px;
+      border-radius: 9px;
+      font-size: 13px;
     }
 
     .badge {
@@ -401,6 +414,21 @@
       padding: 10px 12px;
       font-weight: 900;
       cursor: pointer;
+    }
+
+    .payroll-sales-box {
+      background: linear-gradient(135deg, #eff6ff, #f8fafc);
+      border: 1px solid #dbeafe;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .payroll-rule {
+      font-size: 12px;
+      color: #475569;
+      line-height: 1.5;
+      min-width: 220px;
     }
 
     .schedule-wrap {
@@ -551,7 +579,7 @@
       }
 
       table {
-        min-width: 900px;
+        min-width: 1100px;
       }
     }
   </style>
@@ -571,7 +599,6 @@
       <nav class="nav">
         <button class="active" data-section="dashboard">📊 Dashboard</button>
         <button data-section="employees">👥 თანამშრომლები</button>
-        <button data-section="sales">💰 ნავაჭრი</button>
         <button data-section="payroll">🏦 სახელფასო</button>
         <button data-section="advances">💸 ავანსები</button>
         <button data-section="schedule">🗓️ გრაფიკი</button>
@@ -584,7 +611,7 @@
         <div>
           <button class="mobile-menu" onclick="toggleSidebar()">☰ მენიუ</button>
           <h1 id="pageTitle">Dashboard</h1>
-          <div class="note">ახლა მონაცემები ერთ მოთხოვნაში იტვირთება, ამიტომ ბევრად სწრაფი უნდა იყოს.</div>
+          <div class="note">თვეს რომ შეცვლი, იხსნება იმ თვის ცალკე სახელფასო, ავანსები და გრაფიკი.</div>
         </div>
 
         <div class="top-controls">
@@ -616,22 +643,24 @@
           </div>
         </div>
 
-        <div class="grid two">
-          <div class="card">
-            <h2 class="section-title">შემოსავლები</h2>
-            <p>მაღაზია: <b id="dashStoreSales">0 ₾</b></p>
-            <p>ონლაინი: <b id="dashOnlineSales">0 ₾</b></p>
-            <p>ჯამი: <b id="dashSalesAll">0 ₾</b></p>
-          </div>
-
-          <div class="card">
-            <h2 class="section-title">სახელფასო შეჯამება</h2>
-            <p>ფიქსები: <b id="dashFixed">0 ₾</b></p>
-            <p>ბონუსები: <b id="dashBonus">0 ₾</b></p>
-            <p>ავანსები: <b id="dashAdvances">0 ₾</b></p>
-            <p>ხელზე გაცემული: <b id="dashCash">0 ₾</b></p>
-            <p>საპენსიო: <b id="dashPension">0 ₾</b></p>
-            <p>ხელფასის წილი ნავაჭრში: <b id="dashPayrollPercent">0%</b></p>
+        <div class="card">
+          <h2 class="section-title">აქტიური თანამშრომლების სახელფასო სურათი</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>თანამშრომელი</th>
+                  <th>პირადი ნომერი</th>
+                  <th>ფიქსი</th>
+                  <th>პირობა</th>
+                  <th>ბონუსი</th>
+                  <th>ავანსი</th>
+                  <th>ხელზე გაცემული</th>
+                  <th>ბანკით ჩასარიცხი</th>
+                </tr>
+              </thead>
+              <tbody id="dashboardPayrollTable"></tbody>
+            </table>
           </div>
         </div>
       </section>
@@ -760,11 +789,11 @@
         </div>
       </section>
 
-      <section class="section" id="sales">
-        <div class="card">
-          <h2 class="section-title">თვის ნავაჭრი</h2>
+      <section class="section" id="payroll">
+        <div class="payroll-sales-box">
+          <h2 class="section-title">თვის ნავაჭრი და სახელფასო დაფა</h2>
 
-          <div class="grid two">
+          <div class="grid form">
             <div class="field">
               <label>მაღაზიის ნავაჭრი</label>
               <input id="storeSales" type="number" step="0.01" />
@@ -774,24 +803,27 @@
               <label>ონლაინ ნავაჭრი</label>
               <input id="onlineSales" type="number" step="0.01" />
             </div>
+
+            <div class="field">
+              <label>ჯამური ნავაჭრი</label>
+              <input id="totalSalesView" disabled />
+            </div>
+
+            <div class="field">
+              <label>ქმედება</label>
+              <button class="btn green" onclick="saveSales()">ნავაჭრის შენახვა და გადათვლა</button>
+            </div>
           </div>
 
-          <div class="field" style="margin-top:12px;">
-            <label>კომენტარი</label>
-            <textarea id="salesComment"></textarea>
-          </div>
-
-          <div style="margin-top:14px;">
-            <button class="btn green" onclick="saveSales()">ნავაჭრის შენახვა</button>
+          <div class="note">
+            ნავაჭრი ინახება არჩეულ თვეზე. ბონუსი ითვლება თანამშრომლის პირობის მიხედვით: მხოლოდ მაღაზია, მხოლოდ ონლაინი ან ორივე ერთად.
           </div>
         </div>
-      </section>
 
-      <section class="section" id="payroll">
         <div class="card">
           <div class="toolbar">
-            <h2 class="section-title">სახელფასო</h2>
-            <button class="btn green" onclick="createPayroll()">ამ თვის სახელფასოს შექმნა/განახლება</button>
+            <h2 class="section-title">სახელფასო — აქტიური თანამშრომლები</h2>
+            <button class="btn green" onclick="createPayroll()">აქტიური თანამშრომლების განახლება</button>
           </div>
 
           <div class="table-wrap">
@@ -799,79 +831,47 @@
               <thead>
                 <tr>
                   <th>თანამშრომელი</th>
+                  <th>პირადი ნომერი</th>
                   <th>ფიქსი</th>
+                  <th>პირობა</th>
                   <th>წყარო</th>
                   <th>%</th>
                   <th>ბონუსი</th>
                   <th>ჯამური დასარიცხი</th>
-                  <th>ავანსი</th>
+                  <th>ავანსები</th>
+                  <th>ახალი ავანსის თარიღი</th>
+                  <th>ახალი ავანსი</th>
+                  <th>ავანსის ტიპი</th>
                   <th>ხელზე გაცემული</th>
                   <th>დარჩენილი დასარიცხი</th>
                   <th>საპენსიო</th>
                   <th>ბანკით ჩასარიცხი</th>
                   <th>სტატუსი</th>
-                  <th>შენახვა</th>
+                  <th>ქმედება</th>
                 </tr>
               </thead>
 
               <tbody id="payrollTable"></tbody>
             </table>
           </div>
+
+          <div class="note">
+            ავანსში თუ მიუთითებ 300-ს: ხელზე = თანამშრომელი იღებს 300-ს; დარიცხვით = თანამშრომელი იღებს 294-ს, მაგრამ ხელფასიდან აკლდება 300.
+          </div>
         </div>
       </section>
 
       <section class="section" id="advances">
         <div class="card">
-          <h2 class="section-title">ავანსის დამატება</h2>
-
-          <div class="grid form">
-            <div class="field">
-              <label>თანამშრომელი</label>
-              <select id="advEmployee"></select>
-            </div>
-
-            <div class="field">
-              <label>თარიღი</label>
-              <input id="advDate" type="date" />
-            </div>
-
-            <div class="field">
-              <label>ავანსის ტიპი</label>
-              <select id="advType" onchange="previewAdvance()">
-                <option value="cash">ხელზე</option>
-                <option value="bank">დარიცხვით</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label>ავანსის თანხა</label>
-              <input id="advAmount" type="number" step="0.01" oninput="previewAdvance()" />
-            </div>
-          </div>
-
-          <div class="note" id="advancePreview">
-            თუ ხელზეა 300 ₾, თანამშრომელი იღებს 300 ₾. თუ დარიცხვითაა 300 ₾, თანამშრომელი იღებს 294 ₾.
-          </div>
-
-          <div class="field" style="margin-top:12px;">
-            <label>კომენტარი</label>
-            <textarea id="advComment"></textarea>
-          </div>
-
-          <div style="margin-top:14px;">
-            <button class="btn green" onclick="addAdvance()">ავანსის შენახვა</button>
-          </div>
-        </div>
-
-        <div class="card">
-          <h2 class="section-title">ამ თვის ავანსები</h2>
+          <h2 class="section-title">ამ თვის ავანსები — ყველა თანამშრომელი</h2>
 
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <th>თარიღი</th>
                   <th>თანამშრომელი</th>
+                  <th>პირადი ნომერი</th>
+                  <th>თარიღი</th>
                   <th>ტიპი</th>
                   <th>ჩაწერილი თანხა</th>
                   <th>საპენსიო</th>
@@ -934,7 +934,7 @@
           </div>
 
           <div class="note">
-            ცხრილში უჯრაზე დაჭერით ავტომატურად შეივსება თანამშრომელი და თარიღი. შემდეგ აირჩიე სტატუსი და შეინახე.
+            ცხრილში უჯრაზე დაჭერით ავტომატურად შეივსება თანამშრომელი და თარიღი.
           </div>
         </div>
 
@@ -1049,7 +1049,6 @@
       state.month = month;
 
       document.getElementById("monthPicker").value = month;
-      document.getElementById("advDate").value = date;
       document.getElementById("schDate").value = date;
 
       bindNavigation();
@@ -1162,15 +1161,21 @@
       setText("dashGrossTotal", money(s.gross_total));
       setText("dashBankNet", money(s.bank_net_total));
       setText("dashEmployees", s.active_employees || 0);
-      setText("dashStoreSales", money(s.store_sales));
-      setText("dashOnlineSales", money(s.online_sales));
-      setText("dashSalesAll", money(s.total_sales));
-      setText("dashFixed", money(s.fixed_salary_total));
-      setText("dashBonus", money(s.bonus_total));
-      setText("dashAdvances", money(s.advances_total));
-      setText("dashCash", money(s.cash_given_total));
-      setText("dashPension", money(s.pension_total));
-      setText("dashPayrollPercent", percent(s.payroll_percent_of_sales));
+
+      const tbody = document.getElementById("dashboardPayrollTable");
+
+      tbody.innerHTML = state.payroll.map(row => `
+        <tr>
+          <td><b>${escapeHtml(row.full_name_snapshot)}</b><br><small>${escapeHtml(row.position_snapshot)}</small></td>
+          <td>${escapeHtml(row.personal_number_snapshot)}</td>
+          <td>${money(row.fixed_salary_snapshot)}</td>
+          <td>${salaryTypeLabel(row.salary_type_snapshot)} / ${bonusSourceLabel(row.bonus_source_snapshot)} / ${number(row.bonus_percent_snapshot)}%</td>
+          <td>${money(row.bonus_amount)}</td>
+          <td>${money(row.advance_total)}</td>
+          <td>${money(row.cash_given)}</td>
+          <td><b class="success">${money(row.bank_net_to_receive)}</b></td>
+        </tr>
+      `).join("");
     }
 
     function renderEmployees() {
@@ -1205,33 +1210,42 @@
         <option value="${escapeAttr(emp.employee_id)}">${escapeHtml(emp.full_name)}</option>
       `).join("");
 
-      document.getElementById("advEmployee").innerHTML = html;
       document.getElementById("schEmployee").innerHTML = html;
     }
 
     function renderSalesForm() {
       document.getElementById("storeSales").value = number(state.sales.store_sales) || "";
       document.getElementById("onlineSales").value = number(state.sales.online_sales) || "";
-      document.getElementById("salesComment").value = state.sales.comment || "";
+      document.getElementById("totalSalesView").value = money(number(state.sales.store_sales) + number(state.sales.online_sales));
     }
 
     function renderPayroll() {
       const tbody = document.getElementById("payrollTable");
+      const today = new Date().toISOString().slice(0, 10);
 
       tbody.innerHTML = state.payroll.map(row => `
         <tr>
           <td>
             <b>${escapeHtml(row.full_name_snapshot)}</b><br>
-            <small>${escapeHtml(row.personal_number_snapshot)}</small>
+            <small>${escapeHtml(row.position_snapshot || "")}</small>
           </td>
 
+          <td>${escapeHtml(row.personal_number_snapshot)}</td>
+
           <td>
-            <input type="number" step="0.01" value="${number(row.fixed_salary_snapshot)}"
+            <input class="mini-input" type="number" step="0.01" value="${number(row.fixed_salary_snapshot)}"
               onchange="updatePayrollField('${escapeAttr(row.payroll_id)}','fixed_salary_snapshot',this.value)" />
           </td>
 
           <td>
-            <select onchange="updatePayrollField('${escapeAttr(row.payroll_id)}','bonus_source_snapshot',this.value)">
+            <select class="mini-select" onchange="updatePayrollField('${escapeAttr(row.payroll_id)}','salary_type_snapshot',this.value)">
+              ${option("fixed", "ფიქსი", row.salary_type_snapshot)}
+              ${option("fixed_bonus", "ფიქსი+ბონუსი", row.salary_type_snapshot)}
+            </select>
+          </td>
+
+          <td>
+            <select class="mini-select" onchange="updatePayrollField('${escapeAttr(row.payroll_id)}','bonus_source_snapshot',this.value)">
               ${option("none", "არა", row.bonus_source_snapshot)}
               ${option("store", "მაღაზია", row.bonus_source_snapshot)}
               ${option("online", "ონლაინი", row.bonus_source_snapshot)}
@@ -1240,7 +1254,7 @@
           </td>
 
           <td>
-            <input type="number" step="0.01" value="${number(row.bonus_percent_snapshot)}"
+            <input class="mini-input" type="number" step="0.01" value="${number(row.bonus_percent_snapshot)}"
               onchange="updatePayrollField('${escapeAttr(row.payroll_id)}','bonus_percent_snapshot',this.value)" />
           </td>
 
@@ -1249,7 +1263,22 @@
           <td>${money(row.advance_total)}</td>
 
           <td>
-            <input type="number" step="0.01" value="${number(row.cash_given)}"
+            <input class="mini-input" id="advDate_${escapeAttr(row.employee_id)}" type="date" value="${today}" />
+          </td>
+
+          <td>
+            <input class="mini-input" id="advAmount_${escapeAttr(row.employee_id)}" type="number" step="0.01" placeholder="0" />
+          </td>
+
+          <td>
+            <select class="mini-select" id="advType_${escapeAttr(row.employee_id)}">
+              <option value="cash">ხელზე</option>
+              <option value="bank">დარიცხვით</option>
+            </select>
+          </td>
+
+          <td>
+            <input class="mini-input" type="number" step="0.01" value="${number(row.cash_given)}"
               onchange="updatePayrollField('${escapeAttr(row.payroll_id)}','cash_given',this.value)" />
           </td>
 
@@ -1258,7 +1287,7 @@
           <td><b class="success">${money(row.bank_net_to_receive)}</b></td>
 
           <td>
-            <select onchange="updatePayrollField('${escapeAttr(row.payroll_id)}','payment_status',this.value)">
+            <select class="mini-select" onchange="updatePayrollField('${escapeAttr(row.payroll_id)}','payment_status',this.value)">
               ${option("draft", "დასათვლელი", row.payment_status)}
               ${option("partial", "ნაწილობრივი", row.payment_status)}
               ${option("paid", "გადახდილი", row.payment_status)}
@@ -1266,7 +1295,8 @@
           </td>
 
           <td>
-            <button class="btn dark" onclick="savePayrollRow('${escapeAttr(row.payroll_id)}')">შენახვა</button>
+            <button class="btn dark" onclick="savePayrollRow('${escapeAttr(row.payroll_id)}')">ხელფასი</button>
+            <button class="btn green" onclick="saveAdvanceForEmployee('${escapeAttr(row.employee_id)}')">ავანსი</button>
           </td>
         </tr>
       `).join("");
@@ -1277,8 +1307,9 @@
 
       tbody.innerHTML = state.advances.map(row => `
         <tr>
+          <td><b>${escapeHtml(row.full_name_snapshot)}</b></td>
+          <td>${escapeHtml(row.personal_number_snapshot)}</td>
           <td>${formatDate(row.date)}</td>
-          <td><b>${escapeHtml(row.full_name_snapshot)}</b><br><small>${escapeHtml(row.personal_number_snapshot)}</small></td>
           <td>${row.advance_type === "bank" ? '<span class="badge info">დარიცხვით</span>' : '<span class="badge warn">ხელზე</span>'}</td>
           <td>${money(row.advance_amount)}</td>
           <td>${money(row.pension_2_percent)}</td>
@@ -1388,7 +1419,7 @@
           html += `
             <td>
               <div class="schedule-cell ${cls}" title="${escapeAttr(title)}"
-                onclick="pickScheduleCell('${escapeAttr(emp.employee_id)}','${escapeAttr(day.date)}','${escapeAttr(status)}')">
+                onclick="pickScheduleCell('${escapeAttr(emp.employee_id)}','${escapeAttr(day.date)}')">
                 ${mark}
               </div>
             </td>
@@ -1411,7 +1442,7 @@
       table.innerHTML = html;
     }
 
-    function pickScheduleCell(employeeId, date, status) {
+    function pickScheduleCell(employeeId, date) {
       document.getElementById("schEmployee").value = employeeId;
       document.getElementById("schDate").value = date;
 
@@ -1433,7 +1464,7 @@
       }
 
       toggleWorkTimeFields();
-      toast("გრაფიკის ფორმა შეივსო. აირჩიე სტატუსი და შეინახე.");
+      toast("გრაფიკის ფორმა შეივსო.");
     }
 
     function getScheduleTotalsByEmployee() {
@@ -1575,10 +1606,10 @@
           month: state.month,
           store_sales: val("storeSales"),
           online_sales: val("onlineSales"),
-          comment: val("salesComment")
+          comment: ""
         });
 
-        toast("ნავაჭრი შენახულია ✅");
+        toast("ნავაჭრი შენახულია და სახელფასო გადაითვალა ✅");
         await reloadAll();
       } catch (error) {
         toast("შეცდომა: " + error.message);
@@ -1595,7 +1626,7 @@
           month: state.month
         });
 
-        toast("სახელფასო შეიქმნა/განახლდა ✅");
+        toast("აქტიური თანამშრომლები განახლდა ✅");
         await reloadAll();
       } catch (error) {
         toast("შეცდომა: " + error.message);
@@ -1636,27 +1667,26 @@
       }
     }
 
-    async function addAdvance() {
+    async function saveAdvanceForEmployee(employeeId) {
       try {
         showLoader(true);
 
-        const data = {
+        const amount = document.getElementById("advAmount_" + employeeId).value;
+        const date = document.getElementById("advDate_" + employeeId).value;
+        const type = document.getElementById("advType_" + employeeId).value;
+
+        if (!amount || number(amount) <= 0) {
+          throw new Error("ჩაწერე ავანსის თანხა");
+        }
+
+        await apiPost("addAdvance", {
           month: state.month,
-          employee_id: val("advEmployee"),
-          date: val("advDate"),
-          advance_type: val("advType"),
-          advance_amount: val("advAmount"),
-          comment: val("advComment")
-        };
-
-        if (!data.employee_id) throw new Error("აირჩიე თანამშრომელი");
-        if (!data.advance_amount) throw new Error("ჩაწერე ავანსის თანხა");
-
-        await apiPost("addAdvance", data);
-
-        setValue("advAmount", "");
-        setValue("advComment", "");
-        previewAdvance();
+          employee_id: employeeId,
+          date: date,
+          advance_type: type,
+          advance_amount: amount,
+          comment: "სახელფასო ცხრილიდან დამატებული"
+        });
 
         toast("ავანსი დაემატა ✅");
         await reloadAll();
@@ -1664,28 +1694,6 @@
         toast("შეცდომა: " + error.message);
       } finally {
         showLoader(false);
-      }
-    }
-
-    function previewAdvance() {
-      const amount = number(val("advAmount"));
-      const type = val("advType");
-
-      if (!amount) {
-        document.getElementById("advancePreview").innerHTML =
-          "თუ ხელზეა 300 ₾, თანამშრომელი იღებს 300 ₾. თუ დარიცხვითაა 300 ₾, თანამშრომელი იღებს 294 ₾.";
-        return;
-      }
-
-      if (type === "bank") {
-        const pension = round2(amount * 0.02);
-        const received = round2(amount - pension);
-
-        document.getElementById("advancePreview").innerHTML =
-          `დარიცხვით: ${money(amount)} - საპენსიო ${money(pension)} = თანამშრომელი მიიღებს <b>${money(received)}</b>. ხელფასიდან ჩამოაკლდება ${money(amount)}.`;
-      } else {
-        document.getElementById("advancePreview").innerHTML =
-          `ხელზე: თანამშრომელი მიიღებს <b>${money(amount)}</b>. ხელფასიდან ჩამოაკლდება ${money(amount)}.`;
       }
     }
 
@@ -1770,13 +1778,9 @@
       return "";
     }
 
-    function scheduleLabel(value) {
-      if (value === "work") return '<span class="badge active">მუშაობს</span>';
-      if (value === "day_off") return '<span class="badge info">ისვენებს</span>';
-      if (value === "vacation") return '<span class="badge warn">შვებულება</span>';
-      if (value === "excused_absence") return '<span class="badge info">საპატიო</span>';
-      if (value === "unexcused_absence") return '<span class="badge inactive">არასაპატიო</span>';
-      return escapeHtml(value);
+    function salaryTypeLabel(value) {
+      if (value === "fixed_bonus") return "ფიქსი + ბონუსი";
+      return "მხოლოდ ფიქსი";
     }
 
     function bonusSourceLabel(value) {
