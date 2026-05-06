@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>სახელფასო სისტემა</title>
 
   <style>
@@ -13,11 +14,13 @@
       --muted: #6b7280;
       --border: #e5e7eb;
       --blue: #2563eb;
-      --blue-dark: #1d4ed8;
-      --green: #16a34a;
-      --red: #dc2626;
-      --yellow: #f59e0b;
-      --purple: #7c3aed;
+      --blue2: #1d4ed8;
+      --green: #22c55e;
+      --greenDark: #16a34a;
+      --red: #ef4444;
+      --yellow: #facc15;
+      --purple: #a855f7;
+      --orange: #f97316;
       --radius: 18px;
       --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
     }
@@ -44,31 +47,29 @@
       color: white;
       padding: 22px;
       position: fixed;
-      left: 0;
-      top: 0;
-      bottom: 0;
+      inset: 0 auto 0 0;
       overflow-y: auto;
-      z-index: 20;
+      z-index: 50;
     }
 
     .logo {
-      font-size: 22px;
-      font-weight: 800;
-      margin-bottom: 24px;
-      line-height: 1.3;
+      font-size: 21px;
+      font-weight: 900;
+      line-height: 1.25;
+      margin-bottom: 22px;
     }
 
     .logo span {
       display: block;
+      color: #cbd5e1;
       font-size: 13px;
       font-weight: 500;
-      color: #cbd5e1;
       margin-top: 4px;
     }
 
     .nav button {
       width: 100%;
-      border: none;
+      border: 0;
       background: transparent;
       color: #d1d5db;
       padding: 13px 14px;
@@ -80,32 +81,32 @@
       transition: 0.2s;
     }
 
-    .nav button:hover,
-    .nav button.active {
+    .nav button.active,
+    .nav button:hover {
       background: rgba(255,255,255,0.12);
-      color: #fff;
+      color: white;
       transform: translateX(3px);
     }
 
     .main {
       margin-left: 270px;
       width: calc(100% - 270px);
-      padding: 24px;
+      padding: 22px;
     }
 
     .topbar {
-      background: var(--card);
+      background: white;
       border-radius: var(--radius);
-      padding: 18px;
       box-shadow: var(--shadow);
+      padding: 18px;
       display: flex;
       justify-content: space-between;
+      gap: 14px;
       align-items: center;
-      gap: 16px;
-      margin-bottom: 22px;
+      margin-bottom: 18px;
       position: sticky;
-      top: 16px;
-      z-index: 10;
+      top: 14px;
+      z-index: 20;
     }
 
     .topbar h1 {
@@ -113,7 +114,7 @@
       font-size: 22px;
     }
 
-    .topbar .controls {
+    .top-controls {
       display: flex;
       gap: 10px;
       align-items: center;
@@ -123,13 +124,13 @@
     input,
     select,
     textarea {
+      width: 100%;
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 11px 12px;
-      font-size: 14px;
+      padding: 10px 11px;
       outline: none;
+      font-size: 14px;
       background: white;
-      width: 100%;
     }
 
     input:focus,
@@ -140,29 +141,29 @@
     }
 
     textarea {
+      min-height: 76px;
       resize: vertical;
-      min-height: 80px;
     }
 
     .btn {
-      border: none;
+      border: 0;
       background: var(--blue);
       color: white;
-      border-radius: 13px;
+      font-weight: 800;
       padding: 11px 15px;
-      font-weight: 700;
+      border-radius: 13px;
       cursor: pointer;
       transition: 0.2s;
       white-space: nowrap;
     }
 
     .btn:hover {
-      background: var(--blue-dark);
+      background: var(--blue2);
       transform: translateY(-1px);
     }
 
     .btn.green {
-      background: var(--green);
+      background: var(--greenDark);
     }
 
     .btn.red {
@@ -177,49 +178,6 @@
       background: #6b7280;
     }
 
-    .grid {
-      display: grid;
-      gap: 16px;
-    }
-
-    .grid.cards {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 18px;
-    }
-
-    .stat-card {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .stat-card::after {
-      content: "";
-      position: absolute;
-      right: -30px;
-      top: -30px;
-      width: 100px;
-      height: 100px;
-      background: rgba(37, 99, 235, 0.1);
-      border-radius: 50%;
-    }
-
-    .stat-title {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .stat-value {
-      font-size: 26px;
-      font-weight: 900;
-    }
-
     .section {
       display: none;
       animation: fade 0.2s ease;
@@ -230,8 +188,76 @@
     }
 
     @keyframes fade {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid.cards {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .grid.form {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .stat {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat::after {
+      content: "";
+      position: absolute;
+      right: -28px;
+      top: -28px;
+      width: 100px;
+      height: 100px;
+      background: rgba(37, 99, 235, 0.1);
+      border-radius: 50%;
+    }
+
+    .stat-title {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .stat-value {
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    .field label {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
     }
 
     .section-title {
@@ -239,41 +265,32 @@
       font-size: 20px;
     }
 
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       gap: 12px;
-    }
-
-    .form-grid.two {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .field label {
-      display: block;
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 6px;
-      font-weight: 600;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
     }
 
     .table-wrap {
       overflow-x: auto;
-      border-radius: 16px;
       border: 1px solid var(--border);
+      border-radius: 16px;
       background: white;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 1050px;
+      min-width: 1000px;
     }
 
     th,
     td {
+      padding: 11px;
       border-bottom: 1px solid var(--border);
-      padding: 12px;
       text-align: left;
       font-size: 14px;
       vertical-align: middle;
@@ -281,12 +298,11 @@
 
     th {
       background: #f9fafb;
+      font-weight: 900;
       color: #374151;
-      font-size: 13px;
-      font-weight: 800;
       position: sticky;
       top: 0;
-      z-index: 1;
+      z-index: 2;
     }
 
     tr:hover td {
@@ -295,10 +311,13 @@
 
     .badge {
       display: inline-flex;
+      align-items: center;
+      justify-content: center;
       padding: 5px 9px;
       border-radius: 999px;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 900;
+      white-space: nowrap;
     }
 
     .badge.active {
@@ -321,106 +340,180 @@
       color: #92400e;
     }
 
-    .toolbar {
-      display: flex;
-      gap: 10px;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
+    .note {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-top: 9px;
     }
 
-    .toast {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      background: #111827;
-      color: white;
-      padding: 14px 16px;
-      border-radius: 14px;
-      box-shadow: var(--shadow);
-      display: none;
-      z-index: 100;
-      max-width: 360px;
+    .success {
+      color: #15803d;
+      font-weight: 900;
     }
 
-    .toast.show {
-      display: block;
+    .danger {
+      color: #dc2626;
+      font-weight: 900;
     }
 
     .loader {
-      display: none;
       position: fixed;
       inset: 0;
-      background: rgba(255, 255, 255, 0.7);
-      z-index: 90;
+      background: rgba(255,255,255,0.72);
+      z-index: 200;
+      display: none;
       align-items: center;
       justify-content: center;
       font-size: 18px;
-      font-weight: 800;
-      color: var(--dark);
+      font-weight: 900;
     }
 
     .loader.show {
       display: flex;
     }
 
-    .mini-note {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 8px;
-      line-height: 1.5;
+    .toast {
+      display: none;
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      max-width: 360px;
+      background: #111827;
+      color: white;
+      padding: 14px 16px;
+      border-radius: 14px;
+      z-index: 250;
+      box-shadow: var(--shadow);
+      font-weight: 700;
     }
 
-    .danger-text {
-      color: var(--red);
-      font-weight: 800;
-    }
-
-    .success-text {
-      color: var(--green);
-      font-weight: 800;
-    }
-
-    .chart-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    .bar {
-      height: 13px;
-      background: #e5e7eb;
-      border-radius: 999px;
-      overflow: hidden;
-      margin-top: 8px;
-    }
-
-    .bar-fill {
-      height: 100%;
-      background: var(--blue);
-      border-radius: 999px;
-      width: 0%;
+    .toast.show {
+      display: block;
     }
 
     .mobile-menu {
       display: none;
       background: var(--dark);
       color: white;
-      border: none;
+      border: 0;
       border-radius: 12px;
       padding: 10px 12px;
-      font-weight: 800;
+      font-weight: 900;
       cursor: pointer;
     }
 
-    @media (max-width: 1100px) {
-      .grid.cards {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
+    .schedule-wrap {
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      max-height: 72vh;
+      background: white;
+    }
 
-      .form-grid {
+    .schedule-table {
+      min-width: 1500px;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .schedule-table th,
+    .schedule-table td {
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 6px;
+      font-size: 12px;
+      text-align: center;
+      min-width: 50px;
+    }
+
+    .schedule-table th:first-child,
+    .schedule-table td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 5;
+      background: #fff7ed;
+      min-width: 190px;
+      text-align: left;
+      font-weight: 900;
+    }
+
+    .schedule-table th {
+      background: #ffedd5;
+      z-index: 6;
+    }
+
+    .schedule-table th:first-child {
+      z-index: 8;
+      background: #fed7aa;
+    }
+
+    .schedule-table .summary-head {
+      background: #bbf7d0;
+      min-width: 70px;
+    }
+
+    .schedule-cell {
+      cursor: pointer;
+      border-radius: 7px;
+      font-weight: 900;
+      color: #111827;
+      min-height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .schedule-cell:hover {
+      outline: 2px solid #111827;
+    }
+
+    .st-empty {
+      background: #fff7ed;
+    }
+
+    .st-work {
+      background: #22c55e;
+      color: #052e16;
+    }
+
+    .st-day_off {
+      background: #2563eb;
+      color: white;
+    }
+
+    .st-vacation {
+      background: #facc15;
+      color: #422006;
+    }
+
+    .st-excused_absence {
+      background: #a855f7;
+      color: white;
+    }
+
+    .st-unexcused_absence {
+      background: #ef4444;
+      color: white;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .legend span {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    @media (max-width: 1100px) {
+      .grid.cards,
+      .grid.form {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
@@ -428,7 +521,7 @@
     @media (max-width: 760px) {
       .sidebar {
         transform: translateX(-100%);
-        transition: 0.25s;
+        transition: 0.22s;
       }
 
       .sidebar.open {
@@ -441,20 +534,19 @@
         padding: 14px;
       }
 
+      .topbar {
+        position: static;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
       .mobile-menu {
         display: inline-block;
       }
 
-      .topbar {
-        position: static;
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
       .grid.cards,
-      .form-grid,
-      .form-grid.two,
-      .chart-row {
+      .grid.form,
+      .grid.two {
         grid-template-columns: 1fr;
       }
 
@@ -473,7 +565,7 @@
     <aside class="sidebar" id="sidebar">
       <div class="logo">
         სახელფასო სისტემა
-        <span>Google Sheets Engine</span>
+        <span>Sheets Engine + GitHub Panel</span>
       </div>
 
       <nav class="nav">
@@ -492,58 +584,58 @@
         <div>
           <button class="mobile-menu" onclick="toggleSidebar()">☰ მენიუ</button>
           <h1 id="pageTitle">Dashboard</h1>
-          <div class="mini-note">თვის შეცვლისას იხსნება იმ თვის ცალკე მონაცემები.</div>
+          <div class="note">ახლა მონაცემები ერთ მოთხოვნაში იტვირთება, ამიტომ ბევრად სწრაფი უნდა იყოს.</div>
         </div>
 
-        <div class="controls">
+        <div class="top-controls">
           <input type="month" id="monthPicker" />
           <button class="btn dark" onclick="reloadAll()">განახლება</button>
         </div>
       </div>
 
-      <!-- DASHBOARD -->
       <section class="section active" id="dashboard">
         <div class="grid cards">
-          <div class="card stat-card">
+          <div class="card stat">
             <div class="stat-title">ჯამური ნავაჭრი</div>
             <div class="stat-value" id="dashTotalSales">0 ₾</div>
           </div>
-          <div class="card stat-card">
+
+          <div class="card stat">
             <div class="stat-title">სახელფასო ჯამი</div>
             <div class="stat-value" id="dashGrossTotal">0 ₾</div>
           </div>
-          <div class="card stat-card">
+
+          <div class="card stat">
             <div class="stat-title">ბანკით ჩასარიცხი</div>
             <div class="stat-value" id="dashBankNet">0 ₾</div>
           </div>
-          <div class="card stat-card">
+
+          <div class="card stat">
             <div class="stat-title">აქტიური თანამშრომლები</div>
             <div class="stat-value" id="dashEmployees">0</div>
           </div>
         </div>
 
-        <div class="chart-row">
+        <div class="grid two">
           <div class="card">
-            <h3 class="section-title">შემოსავლები</h3>
+            <h2 class="section-title">შემოსავლები</h2>
             <p>მაღაზია: <b id="dashStoreSales">0 ₾</b></p>
-            <div class="bar"><div class="bar-fill" id="storeBar"></div></div>
             <p>ონლაინი: <b id="dashOnlineSales">0 ₾</b></p>
-            <div class="bar"><div class="bar-fill" id="onlineBar"></div></div>
+            <p>ჯამი: <b id="dashSalesAll">0 ₾</b></p>
           </div>
 
           <div class="card">
-            <h3 class="section-title">სახელფასო შეჯამება</h3>
+            <h2 class="section-title">სახელფასო შეჯამება</h2>
             <p>ფიქსები: <b id="dashFixed">0 ₾</b></p>
             <p>ბონუსები: <b id="dashBonus">0 ₾</b></p>
             <p>ავანსები: <b id="dashAdvances">0 ₾</b></p>
             <p>ხელზე გაცემული: <b id="dashCash">0 ₾</b></p>
-            <p>საპენსიო 2%: <b id="dashPension">0 ₾</b></p>
+            <p>საპენსიო: <b id="dashPension">0 ₾</b></p>
             <p>ხელფასის წილი ნავაჭრში: <b id="dashPayrollPercent">0%</b></p>
           </div>
         </div>
       </section>
 
-      <!-- EMPLOYEES -->
       <section class="section" id="employees">
         <div class="card">
           <div class="toolbar">
@@ -553,31 +645,42 @@
 
           <input type="hidden" id="employeeId" />
 
-          <div class="form-grid">
+          <div class="grid form">
+            <div class="field">
+              <label>პირადი ნომერი</label>
+              <input id="empPersonalNumber" />
+            </div>
+
             <div class="field">
               <label>სახელი გვარი</label>
               <input id="empFullName" />
             </div>
+
             <div class="field">
               <label>პოზიცია</label>
               <input id="empPosition" />
             </div>
+
             <div class="field">
               <label>ტელეფონი</label>
               <input id="empPhone" />
             </div>
+
             <div class="field">
               <label>მისამართი</label>
               <input id="empAddress" />
             </div>
+
             <div class="field">
               <label>ანგარიშის ნომერი</label>
               <input id="empBankAccount" />
             </div>
+
             <div class="field">
               <label>ფიქსირებული დასარიცხი ხელფასი</label>
               <input id="empFixedSalary" type="number" step="0.01" />
             </div>
+
             <div class="field">
               <label>სახელფასო ტიპი</label>
               <select id="empSalaryType">
@@ -585,6 +688,7 @@
                 <option value="fixed_bonus">ფიქსი + ბონუსი</option>
               </select>
             </div>
+
             <div class="field">
               <label>ბონუსის წყარო</label>
               <select id="empBonusSource">
@@ -594,10 +698,12 @@
                 <option value="both">ორივე ერთად</option>
               </select>
             </div>
+
             <div class="field">
               <label>ბონუსის პროცენტი</label>
               <input id="empBonusPercent" type="number" step="0.01" />
             </div>
+
             <div class="field">
               <label>სტატუსი</label>
               <select id="empStatus">
@@ -605,10 +711,12 @@
                 <option value="inactive">არააქტიური</option>
               </select>
             </div>
+
             <div class="field">
               <label>დაწყების თარიღი</label>
               <input id="empStartDate" type="date" />
             </div>
+
             <div class="field">
               <label>გათავისუფლების თარიღი</label>
               <input id="empEndDate" type="date" />
@@ -625,41 +733,43 @@
           </div>
         </div>
 
-        <div class="card" style="margin-top:16px;">
+        <div class="card">
           <div class="toolbar">
             <h2 class="section-title">თანამშრომლები</h2>
-            <input style="max-width:260px;" id="employeeSearch" placeholder="ძებნა..." oninput="renderEmployees()" />
+            <input style="max-width:280px;" id="employeeSearch" placeholder="ძებნა..." oninput="renderEmployees()" />
           </div>
+
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
+                  <th>პირადი ნომერი</th>
                   <th>სახელი</th>
                   <th>პოზიცია</th>
                   <th>ხელფასი</th>
-                  <th>ტიპი</th>
                   <th>ბონუსი</th>
                   <th>სტატუსი</th>
                   <th>ანგარიში</th>
                   <th>ქმედება</th>
                 </tr>
               </thead>
+
               <tbody id="employeesTable"></tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- SALES -->
       <section class="section" id="sales">
         <div class="card">
           <h2 class="section-title">თვის ნავაჭრი</h2>
 
-          <div class="form-grid two">
+          <div class="grid two">
             <div class="field">
               <label>მაღაზიის ნავაჭრი</label>
               <input id="storeSales" type="number" step="0.01" />
             </div>
+
             <div class="field">
               <label>ონლაინ ნავაჭრი</label>
               <input id="onlineSales" type="number" step="0.01" />
@@ -674,14 +784,9 @@
           <div style="margin-top:14px;">
             <button class="btn green" onclick="saveSales()">ნავაჭრის შენახვა</button>
           </div>
-
-          <div class="mini-note">
-            ნავაჭრი ინახება თვის მიხედვით. მაგალითად მარტში ჩაწერილი მონაცემი დარჩება მარტში, აპრილისთვის კი ცალკე შეიყვან.
-          </div>
         </div>
       </section>
 
-      <!-- PAYROLL -->
       <section class="section" id="payroll">
         <div class="card">
           <div class="toolbar">
@@ -705,43 +810,46 @@
                   <th>საპენსიო</th>
                   <th>ბანკით ჩასარიცხი</th>
                   <th>სტატუსი</th>
-                  <th>ქმედება</th>
+                  <th>შენახვა</th>
                 </tr>
               </thead>
+
               <tbody id="payrollTable"></tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- ADVANCES -->
       <section class="section" id="advances">
         <div class="card">
           <h2 class="section-title">ავანსის დამატება</h2>
 
-          <div class="form-grid">
+          <div class="grid form">
             <div class="field">
               <label>თანამშრომელი</label>
               <select id="advEmployee"></select>
             </div>
+
             <div class="field">
               <label>თარიღი</label>
               <input id="advDate" type="date" />
             </div>
+
             <div class="field">
               <label>ავანსის ტიპი</label>
-              <select id="advType">
+              <select id="advType" onchange="previewAdvance()">
                 <option value="cash">ხელზე</option>
                 <option value="bank">დარიცხვით</option>
               </select>
             </div>
+
             <div class="field">
               <label>ავანსის თანხა</label>
               <input id="advAmount" type="number" step="0.01" oninput="previewAdvance()" />
             </div>
           </div>
 
-          <div class="mini-note" id="advancePreview">
+          <div class="note" id="advancePreview">
             თუ ხელზეა 300 ₾, თანამშრომელი იღებს 300 ₾. თუ დარიცხვითაა 300 ₾, თანამშრომელი იღებს 294 ₾.
           </div>
 
@@ -755,8 +863,9 @@
           </div>
         </div>
 
-        <div class="card" style="margin-top:16px;">
+        <div class="card">
           <h2 class="section-title">ამ თვის ავანსები</h2>
+
           <div class="table-wrap">
             <table>
               <thead>
@@ -771,40 +880,44 @@
                   <th>კომენტარი</th>
                 </tr>
               </thead>
+
               <tbody id="advancesTable"></tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- SCHEDULE -->
       <section class="section" id="schedule">
         <div class="card">
-          <h2 class="section-title">გრაფიკის დამატება</h2>
+          <h2 class="section-title">გრაფიკის დამატება / შეცვლა</h2>
 
-          <div class="form-grid">
+          <div class="grid form">
             <div class="field">
               <label>თანამშრომელი</label>
               <select id="schEmployee"></select>
             </div>
+
             <div class="field">
               <label>თარიღი</label>
               <input id="schDate" type="date" />
             </div>
+
             <div class="field">
               <label>სტატუსი</label>
               <select id="schStatus" onchange="toggleWorkTimeFields()">
-                <option value="work">სამუშაო</option>
-                <option value="day_off">დასვენება</option>
+                <option value="work">მუშაობს</option>
+                <option value="day_off">ისვენებს</option>
                 <option value="vacation">შვებულება</option>
                 <option value="excused_absence">საპატიო</option>
                 <option value="unexcused_absence">არასაპატიო</option>
               </select>
             </div>
+
             <div class="field work-time">
               <label>დაწყება</label>
               <input id="schStart" type="time" />
             </div>
+
             <div class="field work-time">
               <label>დასრულება</label>
               <input id="schEnd" type="time" />
@@ -817,54 +930,60 @@
           </div>
 
           <div style="margin-top:14px;">
-            <button class="btn green" onclick="addSchedule()">გრაფიკის შენახვა</button>
+            <button class="btn green" onclick="saveSchedule()">გრაფიკის შენახვა</button>
+          </div>
+
+          <div class="note">
+            ცხრილში უჯრაზე დაჭერით ავტომატურად შეივსება თანამშრომელი და თარიღი. შემდეგ აირჩიე სტატუსი და შეინახე.
           </div>
         </div>
 
-        <div class="card" style="margin-top:16px;">
-          <h2 class="section-title">ამ თვის გრაფიკი</h2>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>თარიღი</th>
-                  <th>თანამშრომელი</th>
-                  <th>სტატუსი</th>
-                  <th>დაწყება</th>
-                  <th>დასრულება</th>
-                  <th>საათი</th>
-                  <th>კომენტარი</th>
-                </tr>
-              </thead>
-              <tbody id="scheduleTable"></tbody>
-            </table>
+        <div class="card">
+          <div class="toolbar">
+            <h2 class="section-title">თვის გრაფიკი</h2>
+            <button class="btn dark" onclick="renderScheduleGrid()">გრაფიკის განახლება</button>
+          </div>
+
+          <div class="legend">
+            <span class="st-work">მ — მუშაობს</span>
+            <span class="st-day_off">დ — ისვენებს</span>
+            <span class="st-vacation">შ — შვებულება</span>
+            <span class="st-excused_absence">ს — საპატიო</span>
+            <span class="st-unexcused_absence">ა — არასაპატიო</span>
+          </div>
+
+          <div class="schedule-wrap">
+            <table class="schedule-table" id="scheduleGrid"></table>
           </div>
         </div>
       </section>
 
-      <!-- ANALYTICS -->
       <section class="section" id="analytics">
         <div class="grid cards">
-          <div class="card stat-card">
+          <div class="card stat">
             <div class="stat-title">სამუშაო დღეები</div>
             <div class="stat-value" id="anaWorkDays">0</div>
           </div>
-          <div class="card stat-card">
+
+          <div class="card stat">
             <div class="stat-title">სამუშაო საათები</div>
             <div class="stat-value" id="anaWorkHours">0</div>
           </div>
-          <div class="card stat-card">
+
+          <div class="card stat">
             <div class="stat-title">შვებულება</div>
             <div class="stat-value" id="anaVacation">0</div>
           </div>
-          <div class="card stat-card">
+
+          <div class="card stat">
             <div class="stat-title">არასაპატიო</div>
             <div class="stat-value" id="anaUnexcused">0</div>
           </div>
         </div>
 
-        <div class="card" style="margin-top:16px;">
+        <div class="card">
           <h2 class="section-title">თანამშრომლების სახელფასო სტატისტიკა</h2>
+
           <div class="table-wrap">
             <table>
               <thead>
@@ -878,26 +997,29 @@
                   <th>ბანკით ჩასარიცხი</th>
                 </tr>
               </thead>
+
               <tbody id="analyticsPayrollTable"></tbody>
             </table>
           </div>
         </div>
 
-        <div class="card" style="margin-top:16px;">
-          <h2 class="section-title">გრაფიკის სტატისტიკა თანამშრომლის მიხედვით</h2>
+        <div class="card">
+          <h2 class="section-title">გრაფიკის ჯამები თანამშრომლის მიხედვით</h2>
+
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
                   <th>თანამშრომელი</th>
-                  <th>სამუშაო დღე</th>
+                  <th>მუშაობს</th>
                   <th>საათი</th>
-                  <th>დასვენება</th>
+                  <th>ისვენებს</th>
                   <th>შვებულება</th>
                   <th>საპატიო</th>
                   <th>არასაპატიო</th>
                 </tr>
               </thead>
+
               <tbody id="analyticsScheduleTable"></tbody>
             </table>
           </div>
@@ -911,7 +1033,8 @@
 
     const state = {
       month: "",
-      dashboard: null,
+      dashboard: {},
+      sales: {},
       employees: [],
       payroll: [],
       advances: [],
@@ -919,13 +1042,15 @@
     };
 
     document.addEventListener("DOMContentLoaded", () => {
-      const now = new Date();
-      const month = now.toISOString().slice(0, 7);
-      document.getElementById("monthPicker").value = month;
+      const today = new Date();
+      const month = today.toISOString().slice(0, 7);
+      const date = today.toISOString().slice(0, 10);
+
       state.month = month;
 
-      document.getElementById("advDate").value = now.toISOString().slice(0, 10);
-      document.getElementById("schDate").value = now.toISOString().slice(0, 10);
+      document.getElementById("monthPicker").value = month;
+      document.getElementById("advDate").value = date;
+      document.getElementById("schDate").value = date;
 
       bindNavigation();
 
@@ -950,6 +1075,10 @@
 
           document.getElementById("pageTitle").textContent = button.textContent.replace(/[📊👥💰🏦💸🗓️📈]/g, "").trim();
 
+          if (section === "schedule") {
+            renderScheduleGrid();
+          }
+
           if (window.innerWidth <= 760) {
             document.getElementById("sidebar").classList.remove("open");
           }
@@ -965,19 +1094,14 @@
       try {
         showLoader(true);
 
-        const [dashboard, employees, payroll, advances, schedule] = await Promise.all([
-          apiGet("dashboard", { month: state.month }),
-          apiGet("employees"),
-          apiGet("payroll", { month: state.month }),
-          apiGet("advances", { month: state.month }),
-          apiGet("schedule", { month: state.month })
-        ]);
+        const data = await apiGet("appData", { month: state.month });
 
-        state.dashboard = dashboard.summary || {};
-        state.employees = employees.employees || [];
-        state.payroll = payroll.payroll || [];
-        state.advances = advances.advances || [];
-        state.schedule = schedule.schedule || [];
+        state.dashboard = data.dashboard || {};
+        state.sales = data.sales || {};
+        state.employees = data.employees || [];
+        state.payroll = data.payroll || [];
+        state.advances = data.advances || [];
+        state.schedule = data.schedule || [];
 
         renderAll();
       } catch (error) {
@@ -992,9 +1116,7 @@
       url.searchParams.set("action", action);
 
       Object.keys(params).forEach(key => {
-        if (params[key] !== undefined && params[key] !== null) {
-          url.searchParams.set(key, params[key]);
-        }
+        url.searchParams.set(key, params[key]);
       });
 
       const response = await fetch(url.toString());
@@ -1010,10 +1132,7 @@
     async function apiPost(action, data = {}) {
       const response = await fetch(API_URL, {
         method: "POST",
-        body: JSON.stringify({
-          action,
-          data
-        })
+        body: JSON.stringify({ action, data })
       });
 
       const result = await response.json();
@@ -1032,8 +1151,8 @@
       renderSalesForm();
       renderPayroll();
       renderAdvances();
-      renderSchedule();
       renderAnalytics();
+      renderScheduleGrid();
     }
 
     function renderDashboard() {
@@ -1043,48 +1162,38 @@
       setText("dashGrossTotal", money(s.gross_total));
       setText("dashBankNet", money(s.bank_net_total));
       setText("dashEmployees", s.active_employees || 0);
-
       setText("dashStoreSales", money(s.store_sales));
       setText("dashOnlineSales", money(s.online_sales));
+      setText("dashSalesAll", money(s.total_sales));
       setText("dashFixed", money(s.fixed_salary_total));
       setText("dashBonus", money(s.bonus_total));
       setText("dashAdvances", money(s.advances_total));
       setText("dashCash", money(s.cash_given_total));
       setText("dashPension", money(s.pension_total));
       setText("dashPayrollPercent", percent(s.payroll_percent_of_sales));
-
-      const totalSales = number(s.total_sales);
-      const storePercent = totalSales > 0 ? number(s.store_sales) / totalSales * 100 : 0;
-      const onlinePercent = totalSales > 0 ? number(s.online_sales) / totalSales * 100 : 0;
-
-      document.getElementById("storeBar").style.width = Math.min(storePercent, 100) + "%";
-      document.getElementById("onlineBar").style.width = Math.min(onlinePercent, 100) + "%";
     }
 
     function renderEmployees() {
       const tbody = document.getElementById("employeesTable");
-      const q = document.getElementById("employeeSearch")?.value?.toLowerCase() || "";
+      const q = (document.getElementById("employeeSearch")?.value || "").toLowerCase();
 
       const rows = state.employees.filter(emp => {
-        return (
+        return String(emp.personal_number || "").toLowerCase().includes(q) ||
           String(emp.full_name || "").toLowerCase().includes(q) ||
           String(emp.position || "").toLowerCase().includes(q) ||
-          String(emp.phone || "").toLowerCase().includes(q)
-        );
+          String(emp.phone || "").toLowerCase().includes(q);
       });
 
       tbody.innerHTML = rows.map(emp => `
         <tr>
+          <td>${escapeHtml(emp.personal_number)}</td>
           <td><b>${escapeHtml(emp.full_name)}</b><br><small>${escapeHtml(emp.phone)}</small></td>
           <td>${escapeHtml(emp.position)}</td>
           <td>${money(emp.fixed_salary)}</td>
-          <td>${salaryTypeLabel(emp.salary_type)}</td>
           <td>${bonusSourceLabel(emp.bonus_source)} / ${number(emp.bonus_percent)}%</td>
           <td>${emp.status === "active" ? '<span class="badge active">აქტიური</span>' : '<span class="badge inactive">არააქტიური</span>'}</td>
           <td>${escapeHtml(emp.bank_account)}</td>
-          <td>
-            <button class="btn" onclick='editEmployee(${JSON.stringify(emp).replace(/'/g, "&apos;")})'>რედაქტირება</button>
-          </td>
+          <td><button class="btn" onclick='editEmployee(${safeJson(emp)})'>რედაქტირება</button></td>
         </tr>
       `).join("");
     }
@@ -1093,7 +1202,7 @@
       const active = state.employees.filter(emp => emp.status === "active");
 
       const html = active.map(emp => `
-        <option value="${emp.employee_id}">${escapeHtml(emp.full_name)}</option>
+        <option value="${escapeAttr(emp.employee_id)}">${escapeHtml(emp.full_name)}</option>
       `).join("");
 
       document.getElementById("advEmployee").innerHTML = html;
@@ -1101,9 +1210,9 @@
     }
 
     function renderSalesForm() {
-      const s = state.dashboard || {};
-      document.getElementById("storeSales").value = number(s.store_sales) || "";
-      document.getElementById("onlineSales").value = number(s.online_sales) || "";
+      document.getElementById("storeSales").value = number(state.sales.store_sales) || "";
+      document.getElementById("onlineSales").value = number(state.sales.online_sales) || "";
+      document.getElementById("salesComment").value = state.sales.comment || "";
     }
 
     function renderPayroll() {
@@ -1111,42 +1220,53 @@
 
       tbody.innerHTML = state.payroll.map(row => `
         <tr>
-          <td><b>${escapeHtml(row.full_name_snapshot)}</b><br><small>${escapeHtml(row.position_snapshot)}</small></td>
+          <td>
+            <b>${escapeHtml(row.full_name_snapshot)}</b><br>
+            <small>${escapeHtml(row.personal_number_snapshot)}</small>
+          </td>
+
           <td>
             <input type="number" step="0.01" value="${number(row.fixed_salary_snapshot)}"
-              onchange="updatePayrollField('${row.payroll_id}', 'fixed_salary_snapshot', this.value)" />
+              onchange="updatePayrollField('${escapeAttr(row.payroll_id)}','fixed_salary_snapshot',this.value)" />
           </td>
+
           <td>
-            <select onchange="updatePayrollField('${row.payroll_id}', 'bonus_source_snapshot', this.value)">
-              ${option("none", "ბონუსის გარეშე", row.bonus_source_snapshot)}
+            <select onchange="updatePayrollField('${escapeAttr(row.payroll_id)}','bonus_source_snapshot',this.value)">
+              ${option("none", "არა", row.bonus_source_snapshot)}
               ${option("store", "მაღაზია", row.bonus_source_snapshot)}
               ${option("online", "ონლაინი", row.bonus_source_snapshot)}
               ${option("both", "ორივე", row.bonus_source_snapshot)}
             </select>
           </td>
+
           <td>
             <input type="number" step="0.01" value="${number(row.bonus_percent_snapshot)}"
-              onchange="updatePayrollField('${row.payroll_id}', 'bonus_percent_snapshot', this.value)" />
+              onchange="updatePayrollField('${escapeAttr(row.payroll_id)}','bonus_percent_snapshot',this.value)" />
           </td>
+
           <td>${money(row.bonus_amount)}</td>
           <td><b>${money(row.gross_total)}</b></td>
           <td>${money(row.advance_total)}</td>
+
           <td>
             <input type="number" step="0.01" value="${number(row.cash_given)}"
-              onchange="updatePayrollField('${row.payroll_id}', 'cash_given', this.value)" />
+              onchange="updatePayrollField('${escapeAttr(row.payroll_id)}','cash_given',this.value)" />
           </td>
+
           <td>${money(row.remaining_gross)}</td>
           <td>${money(row.pension_2_percent)}</td>
-          <td><b class="success-text">${money(row.bank_net_to_receive)}</b></td>
+          <td><b class="success">${money(row.bank_net_to_receive)}</b></td>
+
           <td>
-            <select onchange="updatePayrollField('${row.payroll_id}', 'payment_status', this.value)">
+            <select onchange="updatePayrollField('${escapeAttr(row.payroll_id)}','payment_status',this.value)">
               ${option("draft", "დასათვლელი", row.payment_status)}
-              ${option("partial", "ნაწილობრივ გაცემული", row.payment_status)}
-              ${option("paid", "სრულად გაცემული", row.payment_status)}
+              ${option("partial", "ნაწილობრივი", row.payment_status)}
+              ${option("paid", "გადახდილი", row.payment_status)}
             </select>
           </td>
+
           <td>
-            <button class="btn dark" onclick="savePayrollRow('${row.payroll_id}')">შენახვა</button>
+            <button class="btn dark" onclick="savePayrollRow('${escapeAttr(row.payroll_id)}')">შენახვა</button>
           </td>
         </tr>
       `).join("");
@@ -1158,28 +1278,12 @@
       tbody.innerHTML = state.advances.map(row => `
         <tr>
           <td>${formatDate(row.date)}</td>
-          <td><b>${escapeHtml(row.full_name_snapshot)}</b></td>
+          <td><b>${escapeHtml(row.full_name_snapshot)}</b><br><small>${escapeHtml(row.personal_number_snapshot)}</small></td>
           <td>${row.advance_type === "bank" ? '<span class="badge info">დარიცხვით</span>' : '<span class="badge warn">ხელზე</span>'}</td>
           <td>${money(row.advance_amount)}</td>
           <td>${money(row.pension_2_percent)}</td>
           <td><b>${money(row.employee_received)}</b></td>
           <td>${money(row.salary_deduction)}</td>
-          <td>${escapeHtml(row.comment)}</td>
-        </tr>
-      `).join("");
-    }
-
-    function renderSchedule() {
-      const tbody = document.getElementById("scheduleTable");
-
-      tbody.innerHTML = state.schedule.map(row => `
-        <tr>
-          <td>${formatDate(row.date)}</td>
-          <td><b>${escapeHtml(row.full_name_snapshot)}</b></td>
-          <td>${scheduleLabel(row.status)}</td>
-          <td>${escapeHtml(row.start_time)}</td>
-          <td>${escapeHtml(row.end_time)}</td>
-          <td>${number(row.worked_hours)}</td>
           <td>${escapeHtml(row.comment)}</td>
         </tr>
       `).join("");
@@ -1205,12 +1309,157 @@
         </tr>
       `).join("");
 
+      const totals = getScheduleTotalsByEmployee();
+
+      document.getElementById("analyticsScheduleTable").innerHTML = totals.map(row => `
+        <tr>
+          <td><b>${escapeHtml(row.name)}</b></td>
+          <td>${row.work}</td>
+          <td>${round2(row.hours)}</td>
+          <td>${row.day_off}</td>
+          <td>${row.vacation}</td>
+          <td>${row.excused_absence}</td>
+          <td>${row.unexcused_absence}</td>
+        </tr>
+      `).join("");
+    }
+
+    function renderScheduleGrid() {
+      const table = document.getElementById("scheduleGrid");
+      if (!table) return;
+
+      const activeEmployees = state.employees.filter(emp => emp.status === "active");
+      const days = getDaysInMonth(state.month);
+      const records = {};
+
+      state.schedule.forEach(row => {
+        const key = row.employee_id + "|" + formatDate(row.date);
+        records[key] = row;
+      });
+
+      let html = "<thead><tr>";
+      html += "<th>თანამშრომელი</th>";
+
+      days.forEach(day => {
+        html += `<th>${day.label}<br><small>${day.weekday}</small></th>`;
+      });
+
+      html += `
+        <th class="summary-head">მ</th>
+        <th class="summary-head">სთ</th>
+        <th class="summary-head">დ</th>
+        <th class="summary-head">შ</th>
+        <th class="summary-head">ს</th>
+        <th class="summary-head">ა</th>
+      `;
+
+      html += "</tr></thead><tbody>";
+
+      activeEmployees.forEach(emp => {
+        const totals = {
+          work: 0,
+          hours: 0,
+          day_off: 0,
+          vacation: 0,
+          excused_absence: 0,
+          unexcused_absence: 0
+        };
+
+        html += `<tr><td>${escapeHtml(emp.full_name)}<br><small>${escapeHtml(emp.position || "")}</small></td>`;
+
+        days.forEach(day => {
+          const key = emp.employee_id + "|" + day.date;
+          const rec = records[key];
+          const status = rec ? rec.status : "";
+          const mark = statusMark(status);
+          const cls = status ? "st-" + status : "st-empty";
+
+          if (status === "work") totals.work++;
+          if (status === "day_off") totals.day_off++;
+          if (status === "vacation") totals.vacation++;
+          if (status === "excused_absence") totals.excused_absence++;
+          if (status === "unexcused_absence") totals.unexcused_absence++;
+          totals.hours += number(rec ? rec.worked_hours : 0);
+
+          const title = rec
+            ? `${statusLabel(status)} ${rec.start_time || ""}-${rec.end_time || ""} ${rec.comment || ""}`
+            : "ცარიელი";
+
+          html += `
+            <td>
+              <div class="schedule-cell ${cls}" title="${escapeAttr(title)}"
+                onclick="pickScheduleCell('${escapeAttr(emp.employee_id)}','${escapeAttr(day.date)}','${escapeAttr(status)}')">
+                ${mark}
+              </div>
+            </td>
+          `;
+        });
+
+        html += `
+          <td>${totals.work}</td>
+          <td>${round2(totals.hours)}</td>
+          <td>${totals.day_off}</td>
+          <td>${totals.vacation}</td>
+          <td>${totals.excused_absence}</td>
+          <td>${totals.unexcused_absence}</td>
+        `;
+
+        html += "</tr>";
+      });
+
+      html += "</tbody>";
+      table.innerHTML = html;
+    }
+
+    function pickScheduleCell(employeeId, date, status) {
+      document.getElementById("schEmployee").value = employeeId;
+      document.getElementById("schDate").value = date;
+
+      const existing = state.schedule.find(row =>
+        String(row.employee_id) === String(employeeId) &&
+        formatDate(row.date) === date
+      );
+
+      if (existing) {
+        document.getElementById("schStatus").value = existing.status || "work";
+        document.getElementById("schStart").value = existing.start_time || "";
+        document.getElementById("schEnd").value = existing.end_time || "";
+        document.getElementById("schComment").value = existing.comment || "";
+      } else {
+        document.getElementById("schStatus").value = "work";
+        document.getElementById("schStart").value = "";
+        document.getElementById("schEnd").value = "";
+        document.getElementById("schComment").value = "";
+      }
+
+      toggleWorkTimeFields();
+      toast("გრაფიკის ფორმა შეივსო. აირჩიე სტატუსი და შეინახე.");
+    }
+
+    function getScheduleTotalsByEmployee() {
       const grouped = {};
+
+      state.employees
+        .filter(emp => emp.status === "active")
+        .forEach(emp => {
+          grouped[emp.employee_id] = {
+            id: emp.employee_id,
+            name: emp.full_name,
+            work: 0,
+            hours: 0,
+            day_off: 0,
+            vacation: 0,
+            excused_absence: 0,
+            unexcused_absence: 0
+          };
+        });
 
       state.schedule.forEach(row => {
         const id = row.employee_id;
+
         if (!grouped[id]) {
           grouped[id] = {
+            id: id,
             name: row.full_name_snapshot,
             work: 0,
             hours: 0,
@@ -1230,27 +1479,18 @@
         grouped[id].hours += number(row.worked_hours);
       });
 
-      document.getElementById("analyticsScheduleTable").innerHTML = Object.values(grouped).map(row => `
-        <tr>
-          <td><b>${escapeHtml(row.name)}</b></td>
-          <td>${row.work}</td>
-          <td>${round2(row.hours)}</td>
-          <td>${row.day_off}</td>
-          <td>${row.vacation}</td>
-          <td>${row.excused_absence}</td>
-          <td>${row.unexcused_absence}</td>
-        </tr>
-      `).join("");
+      return Object.values(grouped);
     }
 
     async function saveEmployee() {
       try {
         showLoader(true);
 
-        const employeeId = document.getElementById("employeeId").value;
+        const employeeId = val("employeeId");
 
         const data = {
           employee_id: employeeId || undefined,
+          personal_number: val("empPersonalNumber"),
           full_name: val("empFullName"),
           position: val("empPosition"),
           address: val("empAddress"),
@@ -1266,9 +1506,7 @@
           comment: val("empComment")
         };
 
-        if (!data.full_name) {
-          throw new Error("სახელი გვარი აუცილებელია");
-        }
+        if (!data.full_name) throw new Error("სახელი გვარი აუცილებელია");
 
         if (employeeId) {
           await apiPost("updateEmployee", data);
@@ -1288,20 +1526,21 @@
     }
 
     function editEmployee(emp) {
-      document.getElementById("employeeId").value = emp.employee_id || "";
-      document.getElementById("empFullName").value = emp.full_name || "";
-      document.getElementById("empPosition").value = emp.position || "";
-      document.getElementById("empAddress").value = emp.address || "";
-      document.getElementById("empPhone").value = emp.phone || "";
-      document.getElementById("empBankAccount").value = emp.bank_account || "";
-      document.getElementById("empFixedSalary").value = number(emp.fixed_salary);
-      document.getElementById("empSalaryType").value = emp.salary_type || "fixed";
-      document.getElementById("empBonusSource").value = emp.bonus_source || "none";
-      document.getElementById("empBonusPercent").value = number(emp.bonus_percent);
-      document.getElementById("empStatus").value = emp.status || "active";
-      document.getElementById("empStartDate").value = dateInput(emp.start_date);
-      document.getElementById("empEndDate").value = dateInput(emp.end_date);
-      document.getElementById("empComment").value = emp.comment || "";
+      setValue("employeeId", emp.employee_id);
+      setValue("empPersonalNumber", emp.personal_number);
+      setValue("empFullName", emp.full_name);
+      setValue("empPosition", emp.position);
+      setValue("empAddress", emp.address);
+      setValue("empPhone", emp.phone);
+      setValue("empBankAccount", emp.bank_account);
+      setValue("empFixedSalary", number(emp.fixed_salary));
+      setValue("empSalaryType", emp.salary_type || "fixed");
+      setValue("empBonusSource", emp.bonus_source || "none");
+      setValue("empBonusPercent", number(emp.bonus_percent));
+      setValue("empStatus", emp.status || "active");
+      setValue("empStartDate", dateInput(emp.start_date));
+      setValue("empEndDate", dateInput(emp.end_date));
+      setValue("empComment", emp.comment);
 
       document.querySelector('[data-section="employees"]').click();
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1310,6 +1549,7 @@
     function clearEmployeeForm() {
       [
         "employeeId",
+        "empPersonalNumber",
         "empFullName",
         "empPosition",
         "empAddress",
@@ -1320,11 +1560,11 @@
         "empStartDate",
         "empEndDate",
         "empComment"
-      ].forEach(id => document.getElementById(id).value = "");
+      ].forEach(id => setValue(id, ""));
 
-      document.getElementById("empSalaryType").value = "fixed";
-      document.getElementById("empBonusSource").value = "none";
-      document.getElementById("empStatus").value = "active";
+      setValue("empSalaryType", "fixed");
+      setValue("empBonusSource", "none");
+      setValue("empStatus", "active");
     }
 
     async function saveSales() {
@@ -1355,10 +1595,6 @@
           month: state.month
         });
 
-        await apiPost("refreshPayrollForMonth", {
-          month: state.month
-        });
-
         toast("სახელფასო შეიქმნა/განახლდა ✅");
         await reloadAll();
       } catch (error) {
@@ -1369,7 +1605,7 @@
     }
 
     function updatePayrollField(payrollId, field, value) {
-      const row = state.payroll.find(item => item.payroll_id === payrollId);
+      const row = state.payroll.find(item => String(item.payroll_id) === String(payrollId));
       if (!row) return;
       row[field] = value;
     }
@@ -1378,10 +1614,8 @@
       try {
         showLoader(true);
 
-        const row = state.payroll.find(item => item.payroll_id === payrollId);
-        if (!row) {
-          throw new Error("ჩანაწერი ვერ მოიძებნა");
-        }
+        const row = state.payroll.find(item => String(item.payroll_id) === String(payrollId));
+        if (!row) throw new Error("Payroll ჩანაწერი ვერ მოიძებნა");
 
         await apiPost("updatePayroll", {
           payroll_id: row.payroll_id,
@@ -1420,8 +1654,8 @@
 
         await apiPost("addAdvance", data);
 
-        document.getElementById("advAmount").value = "";
-        document.getElementById("advComment").value = "";
+        setValue("advAmount", "");
+        setValue("advComment", "");
         previewAdvance();
 
         toast("ავანსი დაემატა ✅");
@@ -1455,15 +1689,7 @@
       }
     }
 
-    document.addEventListener("input", event => {
-      if (event.target && event.target.id === "advType") previewAdvance();
-    });
-
-    document.addEventListener("change", event => {
-      if (event.target && event.target.id === "advType") previewAdvance();
-    });
-
-    async function addSchedule() {
+    async function saveSchedule() {
       try {
         showLoader(true);
 
@@ -1481,14 +1707,12 @@
         if (!data.date) throw new Error("აირჩიე თარიღი");
 
         if (data.status === "work" && (!data.start_time || !data.end_time)) {
-          throw new Error("სამუშაო სტატუსზე მიუთითე დაწყება და დასრულება");
+          throw new Error("მუშაობის დროს მიუთითე დაწყება და დასრულება");
         }
 
-        await apiPost("addSchedule", data);
+        await apiPost("saveSchedule", data);
 
-        document.getElementById("schComment").value = "";
-
-        toast("გრაფიკი დაემატა ✅");
+        toast("გრაფიკი შენახულია ✅");
         await reloadAll();
       } catch (error) {
         toast("შეცდომა: " + error.message);
@@ -1499,22 +1723,89 @@
 
     function toggleWorkTimeFields() {
       const status = val("schStatus");
+
       document.querySelectorAll(".work-time").forEach(el => {
         el.style.display = status === "work" ? "block" : "none";
       });
     }
 
-    function setText(id, text) {
-      document.getElementById(id).textContent = text;
+    function getDaysInMonth(month) {
+      const parts = month.split("-");
+      const year = Number(parts[0]);
+      const monthIndex = Number(parts[1]) - 1;
+      const lastDay = new Date(year, monthIndex + 1, 0).getDate();
+      const weekdays = ["კვ", "ორშ", "სამ", "ოთხ", "ხუთ", "პარ", "შაბ"];
+      const days = [];
+
+      for (let day = 1; day <= lastDay; day++) {
+        const date = new Date(year, monthIndex, day);
+        const dd = String(day).padStart(2, "0");
+        const mm = String(monthIndex + 1).padStart(2, "0");
+
+        days.push({
+          date: `${year}-${mm}-${dd}`,
+          label: `${dd}.${mm}`,
+          weekday: weekdays[date.getDay()]
+        });
+      }
+
+      return days;
+    }
+
+    function statusMark(status) {
+      if (status === "work") return "მ";
+      if (status === "day_off") return "დ";
+      if (status === "vacation") return "შ";
+      if (status === "excused_absence") return "ს";
+      if (status === "unexcused_absence") return "ა";
+      return "";
+    }
+
+    function statusLabel(status) {
+      if (status === "work") return "მუშაობს";
+      if (status === "day_off") return "ისვენებს";
+      if (status === "vacation") return "შვებულება";
+      if (status === "excused_absence") return "საპატიო";
+      if (status === "unexcused_absence") return "არასაპატიო";
+      return "";
+    }
+
+    function scheduleLabel(value) {
+      if (value === "work") return '<span class="badge active">მუშაობს</span>';
+      if (value === "day_off") return '<span class="badge info">ისვენებს</span>';
+      if (value === "vacation") return '<span class="badge warn">შვებულება</span>';
+      if (value === "excused_absence") return '<span class="badge info">საპატიო</span>';
+      if (value === "unexcused_absence") return '<span class="badge inactive">არასაპატიო</span>';
+      return escapeHtml(value);
+    }
+
+    function bonusSourceLabel(value) {
+      if (value === "store") return "მაღაზია";
+      if (value === "online") return "ონლაინი";
+      if (value === "both") return "ორივე";
+      return "არა";
+    }
+
+    function option(value, label, selected) {
+      return `<option value="${value}" ${String(value) === String(selected) ? "selected" : ""}>${label}</option>`;
     }
 
     function val(id) {
       return document.getElementById(id).value;
     }
 
+    function setValue(id, value) {
+      document.getElementById(id).value = value || "";
+    }
+
+    function setText(id, value) {
+      document.getElementById(id).textContent = value;
+    }
+
     function number(value) {
       if (value === null || value === undefined || value === "") return 0;
       if (typeof value === "number") return value;
+
       const parsed = parseFloat(String(value).replace("₾", "").replace("%", "").replace(",", "."));
       return isNaN(parsed) ? 0 : parsed;
     }
@@ -1531,29 +1822,21 @@
       return round2(value) + "%";
     }
 
-    function option(value, label, selected) {
-      return `<option value="${value}" ${String(selected) === String(value) ? "selected" : ""}>${label}</option>`;
+    function formatDate(value) {
+      if (!value) return "";
+
+      if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}/.test(value)) {
+        return value.slice(0, 10);
+      }
+
+      const date = new Date(value);
+      if (isNaN(date.getTime())) return String(value).slice(0, 10);
+
+      return date.toISOString().slice(0, 10);
     }
 
-    function salaryTypeLabel(value) {
-      if (value === "fixed_bonus") return "ფიქსი + ბონუსი";
-      return "მხოლოდ ფიქსი";
-    }
-
-    function bonusSourceLabel(value) {
-      if (value === "store") return "მაღაზია";
-      if (value === "online") return "ონლაინი";
-      if (value === "both") return "ორივე";
-      return "არა";
-    }
-
-    function scheduleLabel(value) {
-      if (value === "work") return '<span class="badge active">სამუშაო</span>';
-      if (value === "day_off") return '<span class="badge info">დასვენება</span>';
-      if (value === "vacation") return '<span class="badge warn">შვებულება</span>';
-      if (value === "excused_absence") return '<span class="badge info">საპატიო</span>';
-      if (value === "unexcused_absence") return '<span class="badge inactive">არასაპატიო</span>';
-      return escapeHtml(value);
+    function dateInput(value) {
+      return formatDate(value);
     }
 
     function escapeHtml(value) {
@@ -1565,18 +1848,16 @@
         .replaceAll("'", "&#039;");
     }
 
-    function formatDate(value) {
-      if (!value) return "";
-      const date = new Date(value);
-      if (isNaN(date.getTime())) return String(value).slice(0, 10);
-      return date.toISOString().slice(0, 10);
+    function escapeAttr(value) {
+      return escapeHtml(value).replaceAll("`", "&#096;");
     }
 
-    function dateInput(value) {
-      if (!value) return "";
-      const date = new Date(value);
-      if (isNaN(date.getTime())) return String(value).slice(0, 10);
-      return date.toISOString().slice(0, 10);
+    function safeJson(obj) {
+      return JSON.stringify(obj)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll("'", "&#039;");
     }
 
     function showLoader(show) {
@@ -1595,4 +1876,3 @@
   </script>
 </body>
 </html>
-
