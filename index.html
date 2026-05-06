@@ -3,425 +3,119 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>სახელფასო სისტემა</title>
 
   <style>
-    :root {
-      --bg: #f3f4f6;
-      --card: #ffffff;
-      --dark: #111827;
-      --dark2: #1f2937;
-      --muted: #6b7280;
-      --border: #e5e7eb;
-      --blue: #2563eb;
-      --green: #16a34a;
-      --red: #dc2626;
-      --yellow: #f59e0b;
-      --purple: #7c3aed;
-      --radius: 18px;
-      --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    :root{
+      --bg:#f3f4f6;
+      --card:#ffffff;
+      --dark:#111827;
+      --dark2:#1f2937;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --blue:#2563eb;
+      --green:#16a34a;
+      --red:#dc2626;
+      --yellow:#f59e0b;
+      --purple:#7c3aed;
+      --teal:#0f766e;
+      --radius:18px;
+      --shadow:0 12px 30px rgba(15,23,42,.08);
     }
 
-    * { box-sizing: border-box; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--dark)}
+    .app{display:flex;min-height:100vh}
+    .sidebar{width:270px;background:linear-gradient(180deg,#111827,#1f2937);color:#fff;padding:22px;position:fixed;inset:0 auto 0 0;overflow-y:auto;z-index:50}
+    .logo{font-size:21px;font-weight:900;line-height:1.25;margin-bottom:22px}
+    .logo span{display:block;color:#cbd5e1;font-size:13px;font-weight:500;margin-top:4px}
+    .nav button{width:100%;border:0;background:transparent;color:#d1d5db;padding:13px 14px;border-radius:14px;text-align:left;cursor:pointer;font-size:15px;margin-bottom:7px;transition:.2s}
+    .nav button.active,.nav button:hover{background:rgba(255,255,255,.12);color:#fff;transform:translateX(3px)}
+    .main{margin-left:270px;width:calc(100% - 270px);padding:22px}
+    .topbar{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:18px;position:sticky;top:14px;z-index:20}
+    .topbar h1{margin:0;font-size:22px}
+    .top-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    input,select,textarea{width:100%;border:1px solid var(--border);border-radius:12px;padding:10px 11px;outline:none;font-size:14px;background:#fff}
+    input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+    textarea{min-height:76px;resize:vertical}
+    .btn{border:0;background:var(--blue);color:#fff;font-weight:800;padding:11px 15px;border-radius:13px;cursor:pointer;transition:.2s;white-space:nowrap}
+    .btn:hover{transform:translateY(-1px);filter:brightness(.95)}
+    .btn.green{background:var(--green)} .btn.red{background:var(--red)} .btn.dark{background:var(--dark)} .btn.gray{background:#6b7280}
+    .btn.small{padding:8px 10px;font-size:12px;border-radius:10px}
+    .btn.tiny{padding:6px 8px;font-size:11px;border-radius:8px}
+    .mobile-menu{display:none;background:var(--dark);color:#fff;border:0;border-radius:12px;padding:10px 12px;font-weight:900;cursor:pointer}
+    .section{display:none;animation:fade .2s ease} .section.active{display:block}
+    @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+    .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px}
+    .grid{display:grid;gap:14px}
+    .grid.cards{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .grid.form{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .stat{position:relative;overflow:hidden}
+    .stat::after{content:"";position:absolute;right:-28px;top:-28px;width:100px;height:100px;background:rgba(37,99,235,.1);border-radius:50%}
+    .stat-title{color:var(--muted);font-size:13px;font-weight:700;margin-bottom:7px}
+    .stat-value{font-size:26px;font-weight:900}
+    .field label{display:block;color:var(--muted);font-size:13px;font-weight:700;margin-bottom:6px}
+    .section-title{margin:0 0 14px;font-size:20px}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+    .table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:16px;background:#fff}
+    table{width:100%;border-collapse:collapse;min-width:1250px}
+    th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left;font-size:13px;vertical-align:middle}
+    th{background:#f9fafb;font-weight:900;color:#374151;position:sticky;top:0;z-index:2}
+    tr:hover td{background:#f8fafc}
+    .mini-input{min-width:94px;padding:8px;border-radius:9px;font-size:13px}
+    .mini-select{min-width:105px;padding:8px;border-radius:9px;font-size:13px}
+    .badge{display:inline-flex;align-items:center;justify-content:center;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:900;white-space:nowrap}
+    .badge.active{background:#dcfce7;color:#166534}.badge.inactive{background:#fee2e2;color:#991b1b}.badge.info{background:#dbeafe;color:#1e40af}.badge.warn{background:#fef3c7;color:#92400e}
+    .note{font-size:13px;color:var(--muted);line-height:1.5;margin-top:9px}
+    .success{color:#15803d;font-weight:900}.danger{color:#dc2626;font-weight:900}
+    .loader{position:fixed;inset:0;background:rgba(255,255,255,.72);z-index:200;display:none;align-items:center;justify-content:center;font-size:18px;font-weight:900}
+    .loader.show{display:flex}
+    .toast{display:none;position:fixed;right:20px;bottom:20px;max-width:380px;background:#111827;color:#fff;padding:14px 16px;border-radius:14px;z-index:250;box-shadow:var(--shadow);font-weight:700}
+    .toast.show{display:block}
 
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--dark);
+    .sales-layout{display:grid;grid-template-columns:2fr 1fr;gap:16px;align-items:start}
+    .sales-box{background:linear-gradient(135deg,#eff6ff,#f8fafc);border:1px solid #dbeafe;border-radius:18px;padding:16px}
+    .sales-summary{background:linear-gradient(135deg,#f0fdf4,#f8fafc);border:1px solid #dcfce7;border-radius:18px;padding:16px}
+    .summary-line{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed #d1d5db}
+    .summary-line:last-child{border-bottom:0}
+    .summary-line span:first-child{color:var(--muted);font-weight:700}
+
+    .schedule-wrap{overflow:auto;border:1px solid var(--border);border-radius:16px;max-height:78vh;background:#fff}
+    .schedule-table{min-width:1950px;border-collapse:separate;border-spacing:0}
+    .schedule-table th,.schedule-table td{border-right:1px solid var(--border);border-bottom:1px solid var(--border);padding:6px;font-size:12px;text-align:center;min-width:86px;vertical-align:top}
+    .schedule-table th:first-child,.schedule-table td:first-child{position:sticky;left:0;z-index:5;background:#fff7ed;min-width:220px;text-align:left;font-weight:900}
+    .schedule-table th{background:#ffedd5;z-index:6}
+    .schedule-table th:first-child{z-index:8;background:#fed7aa}
+    .schedule-table .summary-head{background:#bbf7d0;min-width:70px}
+    .cell-wrap{display:flex;flex-direction:column;gap:4px;min-width:74px}
+    .schedule-cell{cursor:pointer;border-radius:7px;font-weight:900;color:#111827;min-height:28px;display:flex;align-items:center;justify-content:center;padding:4px}
+    .schedule-cell:hover{outline:2px solid #111827}
+    .cell-editor{display:none;border:1px solid #d1d5db;border-radius:8px;padding:5px;background:#fff}
+    .cell-editor.open{display:block}
+    .cell-editor select,.cell-editor input{padding:4px 6px;font-size:11px;border-radius:7px}
+    .cell-time-row{display:flex;gap:4px;margin-top:4px}
+    .st-empty{background:#fff7ed}
+    .st-work{background:#22c55e;color:#052e16}
+    .st-day_off{background:#2563eb;color:#fff}
+    .st-vacation{background:#facc15;color:#422006}
+    .st-excused_absence{background:#a855f7;color:#fff}
+    .st-unexcused_absence{background:#ef4444;color:#fff}
+
+    .legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+    .legend span{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:900}
+
+    @media (max-width:1100px){
+      .grid.cards,.grid.form,.sales-layout{grid-template-columns:1fr}
     }
-
-    .app { display: flex; min-height: 100vh; }
-
-    .sidebar {
-      width: 270px;
-      background: linear-gradient(180deg, #111827, #1f2937);
-      color: white;
-      padding: 22px;
-      position: fixed;
-      inset: 0 auto 0 0;
-      overflow-y: auto;
-      z-index: 50;
-    }
-
-    .logo {
-      font-size: 21px;
-      font-weight: 900;
-      line-height: 1.25;
-      margin-bottom: 22px;
-    }
-
-    .logo span {
-      display: block;
-      color: #cbd5e1;
-      font-size: 13px;
-      font-weight: 500;
-      margin-top: 4px;
-    }
-
-    .nav button {
-      width: 100%;
-      border: 0;
-      background: transparent;
-      color: #d1d5db;
-      padding: 13px 14px;
-      border-radius: 14px;
-      text-align: left;
-      cursor: pointer;
-      font-size: 15px;
-      margin-bottom: 7px;
-      transition: 0.2s;
-    }
-
-    .nav button.active,
-    .nav button:hover {
-      background: rgba(255,255,255,0.12);
-      color: white;
-      transform: translateX(3px);
-    }
-
-    .main {
-      margin-left: 270px;
-      width: calc(100% - 270px);
-      padding: 22px;
-    }
-
-    .topbar {
-      background: white;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 18px;
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      align-items: center;
-      margin-bottom: 18px;
-      position: sticky;
-      top: 14px;
-      z-index: 20;
-    }
-
-    .topbar h1 { margin: 0; font-size: 22px; }
-
-    .top-controls {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 11px;
-      outline: none;
-      font-size: 14px;
-      background: white;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-    }
-
-    textarea { min-height: 76px; resize: vertical; }
-
-    .btn {
-      border: 0;
-      background: var(--blue);
-      color: white;
-      font-weight: 800;
-      padding: 11px 15px;
-      border-radius: 13px;
-      cursor: pointer;
-      transition: 0.2s;
-      white-space: nowrap;
-    }
-
-    .btn:hover { transform: translateY(-1px); filter: brightness(0.95); }
-    .btn.green { background: var(--green); }
-    .btn.red { background: var(--red); }
-    .btn.dark { background: var(--dark); }
-    .btn.gray { background: #6b7280; }
-    .btn.small { padding: 8px 10px; font-size: 12px; border-radius: 10px; }
-
-    .section { display: none; animation: fade 0.2s ease; }
-    .section.active { display: block; }
-
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .card {
-      background: white;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 18px;
-      margin-bottom: 16px;
-    }
-
-    .grid { display: grid; gap: 14px; }
-    .grid.cards { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    .grid.form { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-
-    .stat {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .stat::after {
-      content: "";
-      position: absolute;
-      right: -28px;
-      top: -28px;
-      width: 100px;
-      height: 100px;
-      background: rgba(37, 99, 235, 0.1);
-      border-radius: 50%;
-    }
-
-    .stat-title {
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 7px;
-    }
-
-    .stat-value {
-      font-size: 26px;
-      font-weight: 900;
-    }
-
-    .field label {
-      display: block;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .section-title { margin: 0 0 14px; font-size: 20px; }
-
-    .toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: white;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 1250px;
-    }
-
-    th, td {
-      padding: 10px;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
-      font-size: 13px;
-      vertical-align: middle;
-    }
-
-    th {
-      background: #f9fafb;
-      font-weight: 900;
-      color: #374151;
-      position: sticky;
-      top: 0;
-      z-index: 2;
-    }
-
-    tr:hover td { background: #f8fafc; }
-
-    .mini-input {
-      min-width: 94px;
-      padding: 8px;
-      border-radius: 9px;
-      font-size: 13px;
-    }
-
-    .mini-select {
-      min-width: 105px;
-      padding: 8px;
-      border-radius: 9px;
-      font-size: 13px;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 5px 9px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .badge.active { background: #dcfce7; color: #166534; }
-    .badge.inactive { background: #fee2e2; color: #991b1b; }
-    .badge.info { background: #dbeafe; color: #1e40af; }
-    .badge.warn { background: #fef3c7; color: #92400e; }
-
-    .note {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.5;
-      margin-top: 9px;
-    }
-
-    .success { color: #15803d; font-weight: 900; }
-    .danger { color: #dc2626; font-weight: 900; }
-
-    .loader {
-      position: fixed;
-      inset: 0;
-      background: rgba(255,255,255,0.72);
-      z-index: 200;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      font-weight: 900;
-    }
-
-    .loader.show { display: flex; }
-
-    .toast {
-      display: none;
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      max-width: 360px;
-      background: #111827;
-      color: white;
-      padding: 14px 16px;
-      border-radius: 14px;
-      z-index: 250;
-      box-shadow: var(--shadow);
-      font-weight: 700;
-    }
-
-    .toast.show { display: block; }
-
-    .mobile-menu {
-      display: none;
-      background: var(--dark);
-      color: white;
-      border: 0;
-      border-radius: 12px;
-      padding: 10px 12px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    .sales-box {
-      background: linear-gradient(135deg, #eff6ff, #f8fafc);
-      border: 1px solid #dbeafe;
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-
-    .schedule-wrap {
-      overflow: auto;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      max-height: 72vh;
-      background: white;
-    }
-
-    .schedule-table {
-      min-width: 1500px;
-      border-collapse: separate;
-      border-spacing: 0;
-    }
-
-    .schedule-table th,
-    .schedule-table td {
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 6px;
-      font-size: 12px;
-      text-align: center;
-      min-width: 50px;
-    }
-
-    .schedule-table th:first-child,
-    .schedule-table td:first-child {
-      position: sticky;
-      left: 0;
-      z-index: 5;
-      background: #fff7ed;
-      min-width: 190px;
-      text-align: left;
-      font-weight: 900;
-    }
-
-    .schedule-table th { background: #ffedd5; z-index: 6; }
-    .schedule-table th:first-child { z-index: 8; background: #fed7aa; }
-    .schedule-table .summary-head { background: #bbf7d0; min-width: 70px; }
-
-    .schedule-cell {
-      cursor: pointer;
-      border-radius: 7px;
-      font-weight: 900;
-      color: #111827;
-      min-height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .schedule-cell:hover { outline: 2px solid #111827; }
-
-    .st-empty { background: #fff7ed; }
-    .st-work { background: #22c55e; color: #052e16; }
-    .st-day_off { background: #2563eb; color: white; }
-    .st-vacation { background: #facc15; color: #422006; }
-    .st-excused_absence { background: #a855f7; color: white; }
-    .st-unexcused_absence { background: #ef4444; color: white; }
-
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-
-    .legend span {
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 900;
-    }
-
-    @media (max-width: 1100px) {
-      .grid.cards, .grid.form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-
-    @media (max-width: 760px) {
-      .sidebar { transform: translateX(-100%); transition: 0.22s; }
-      .sidebar.open { transform: translateX(0); }
-      .main { margin-left: 0; width: 100%; padding: 14px; }
-      .topbar { position: static; flex-direction: column; align-items: flex-start; }
-      .mobile-menu { display: inline-block; }
-      .grid.cards, .grid.form, .grid.two { grid-template-columns: 1fr; }
-      table { min-width: 1100px; }
+    @media (max-width:760px){
+      .sidebar{transform:translateX(-100%);transition:.22s}
+      .sidebar.open{transform:translateX(0)}
+      .main{margin-left:0;width:100%;padding:14px}
+      .topbar{position:static;flex-direction:column;align-items:flex-start}
+      .mobile-menu{display:inline-block}
+      .grid.cards,.grid.form,.grid.two{grid-template-columns:1fr}
+      table{min-width:1100px}
     }
   </style>
 </head>
@@ -434,7 +128,7 @@
     <aside class="sidebar" id="sidebar">
       <div class="logo">
         სახელფასო სისტემა
-        <span>სუფთა ვერსია · ნაკლები ქეში · ნაკლები წერა</span>
+        <span>სუფთა ვერსია · inline გრაფიკი · editable ავანსები</span>
       </div>
 
       <nav class="nav">
@@ -452,9 +146,8 @@
         <div>
           <button class="mobile-menu" onclick="toggleSidebar()">☰ მენიუ</button>
           <h1 id="pageTitle">Dashboard</h1>
-          <div class="note">საიტის გახსნა მხოლოდ კითხულობს მონაცემებს. შიტში ჩაწერა ხდება მხოლოდ შენახვის ღილაკზე.</div>
+          <div class="note">გრაფიკში უჯრაზე დაჭერით იქვე აირჩევ სტატუსს. თუ აირჩევ "მუშაობს", იმავე უჯრაში მიუთითებ დროს 24-საათიან ფორმატში.</div>
         </div>
-
         <div class="top-controls">
           <input type="month" id="monthPicker" />
           <button class="btn dark" onclick="reloadAll()">განახლება</button>
@@ -469,33 +162,32 @@
           <div class="card stat"><div class="stat-title">აქტიური თანამშრომლები</div><div class="stat-value" id="dashEmployees">0</div></div>
         </div>
 
-        <div class="sales-box">
-          <h2 class="section-title">თვის ნავაჭრი / Edit</h2>
-          <div class="grid form">
-            <div class="field"><label>მაღაზიის ნავაჭრი</label><input id="dashStoreSalesInput" type="number" step="0.01" oninput="updateSalesTotalPreview('dash')" /></div>
-            <div class="field"><label>ონლაინ ნავაჭრი</label><input id="dashOnlineSalesInput" type="number" step="0.01" oninput="updateSalesTotalPreview('dash')" /></div>
-            <div class="field"><label>ჯამი</label><input id="dashTotalSalesInput" disabled /></div>
-            <div class="field"><label>ქმედება</label><button class="btn green" onclick="saveSalesFrom('dash')">შენახვა / განახლება</button></div>
+        <div class="sales-layout">
+          <div class="sales-box">
+            <h2 class="section-title">თვის ნავაჭრი / Edit</h2>
+            <div class="grid form">
+              <div class="field"><label>მაღაზიის ნავაჭრი</label><input id="dashStoreSalesInput" type="number" step="0.01" oninput="updateSalesTotalPreview('dash')" /></div>
+              <div class="field"><label>ონლაინ ნავაჭრი</label><input id="dashOnlineSalesInput" type="number" step="0.01" oninput="updateSalesTotalPreview('dash')" /></div>
+              <div class="field"><label>ჯამი</label><input id="dashTotalSalesInput" disabled /></div>
+              <div class="field"><label>ქმედება</label><button class="btn green" onclick="saveSalesFrom('dash')">შენახვა / განახლება</button></div>
+            </div>
+            <div class="note">ერთი თვე = ერთი ჩანაწერი. მეორედ შენახვისას ახალი ხაზი აღარ ემატება.</div>
           </div>
-          <div class="note">ერთი თვე = ერთი ჩანაწერი. მეორედ შენახვისას ახალი ხაზი აღარ ემატება, არსებული თვე ახლდება.</div>
+
+          <div class="sales-summary">
+            <h2 class="section-title" style="font-size:18px;">შენახული ნავაჭრი</h2>
+            <div class="summary-line"><span>მაღაზია</span><b id="salesStoreLabel">0 ₾</b></div>
+            <div class="summary-line"><span>ონლაინი</span><b id="salesOnlineLabel">0 ₾</b></div>
+            <div class="summary-line"><span>ჯამი</span><b id="salesTotalLabel">0 ₾</b></div>
+            <div style="margin-top:12px;"><button class="btn small dark" onclick="focusSalesEdit('dash')">ედიტი</button></div>
+          </div>
         </div>
 
         <div class="card">
           <h2 class="section-title">აქტიური თანამშრომლების სახელფასო სურათი</h2>
           <div class="table-wrap">
             <table>
-              <thead>
-                <tr>
-                  <th>თანამშრომელი</th>
-                  <th>პირადი ნომერი</th>
-                  <th>ფიქსი</th>
-                  <th>პირობა</th>
-                  <th>ბონუსი</th>
-                  <th>ავანსი</th>
-                  <th>ხელზე</th>
-                  <th>ბანკით ჩასარიცხი</th>
-                </tr>
-              </thead>
+              <thead><tr><th>თანამშრომელი</th><th>პირადი ნომერი</th><th>ფიქსი</th><th>პირობა</th><th>ბონუსი</th><th>ავანსი</th><th>ხელზე</th><th>ბანკით ჩასარიცხი</th></tr></thead>
               <tbody id="dashboardPayrollTable"></tbody>
             </table>
           </div>
@@ -546,15 +238,25 @@
       </section>
 
       <section class="section" id="payroll">
-        <div class="sales-box">
-          <h2 class="section-title">თვის ნავაჭრი და სახელფასო დაფა</h2>
-          <div class="grid form">
-            <div class="field"><label>მაღაზიის ნავაჭრი</label><input id="payStoreSalesInput" type="number" step="0.01" oninput="updateSalesTotalPreview('pay')" /></div>
-            <div class="field"><label>ონლაინ ნავაჭრი</label><input id="payOnlineSalesInput" type="number" step="0.01" oninput="updateSalesTotalPreview('pay')" /></div>
-            <div class="field"><label>ჯამი</label><input id="payTotalSalesInput" disabled /></div>
-            <div class="field"><label>ქმედება</label><button class="btn green" onclick="saveSalesFrom('pay')">ნავაჭრის შენახვა / განახლება</button></div>
+        <div class="sales-layout">
+          <div class="sales-box">
+            <h2 class="section-title">თვის ნავაჭრი და სახელფასო დაფა</h2>
+            <div class="grid form">
+              <div class="field"><label>მაღაზიის ნავაჭრი</label><input id="payStoreSalesInput" type="number" step="0.01" oninput="updateSalesTotalPreview('pay')" /></div>
+              <div class="field"><label>ონლაინ ნავაჭრი</label><input id="payOnlineSalesInput" type="number" step="0.01" oninput="updateSalesTotalPreview('pay')" /></div>
+              <div class="field"><label>ჯამი</label><input id="payTotalSalesInput" disabled /></div>
+              <div class="field"><label>ქმედება</label><button class="btn green" onclick="saveSalesFrom('pay')">ნავაჭრის შენახვა / განახლება</button></div>
+            </div>
+            <div class="note">შენახვის შემდეგ ბონუსები გადაითვლება ეკრანზე და შენახული payroll ჩანაწერებიც განახლდება.</div>
           </div>
-          <div class="note">შენახვის შემდეგ ბონუსები გადაითვლება ეკრანზე და შენახული payroll ჩანაწერებიც განახლდება.</div>
+
+          <div class="sales-summary">
+            <h2 class="section-title" style="font-size:18px;">ამ თვის შეჯამება</h2>
+            <div class="summary-line"><span>მაღაზიის ნავაჭრი</span><b id="paySumStore">0 ₾</b></div>
+            <div class="summary-line"><span>ონლაინ ნავაჭრი</span><b id="paySumOnline">0 ₾</b></div>
+            <div class="summary-line"><span>ჯამური ნავაჭრი</span><b id="paySumTotal">0 ₾</b></div>
+            <div style="margin-top:12px;"><button class="btn small dark" onclick="focusSalesEdit('pay')">ედიტი</button></div>
+          </div>
         </div>
 
         <div class="card">
@@ -596,7 +298,10 @@
 
       <section class="section" id="advances">
         <div class="card">
-          <h2 class="section-title">ავანსები — თანამშრომლების გასწვრივ</h2>
+          <div class="toolbar">
+            <h2 class="section-title">ახალი ავანსის დამატება — ყველა თანამშრომლის გასწვრივ</h2>
+            <button class="btn dark" onclick="reloadAll()">მონაცემების განახლება</button>
+          </div>
           <div class="table-wrap">
             <table>
               <thead><tr><th>თანამშრომელი</th><th>პირადი ნომერი</th><th>თარიღი</th><th>თანხა</th><th>ტიპი</th><th>თანამშრომელი მიიღებს</th><th>ხელფასიდან აკლდება</th><th>შენახვა</th></tr></thead>
@@ -606,33 +311,24 @@
         </div>
 
         <div class="card">
-          <h2 class="section-title">ამ თვის შენახული ავანსები</h2>
+          <h2 class="section-title">ამ თვის შენახული ავანსები — რედაქტირებადი</h2>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>თანამშრომელი</th><th>პირადი ნომერი</th><th>თარიღი</th><th>ტიპი</th><th>ჩაწერილი</th><th>საპენსიო</th><th>თანამშრომელმა მიიღო</th><th>ხელფასიდან აკლდება</th><th>კომენტარი</th></tr></thead>
+              <thead><tr><th>თანამშრომელი</th><th>პირადი ნომერი</th><th>თარიღი</th><th>ტიპი</th><th>თანხა</th><th>თანამშრომელი მიიღებს</th><th>ხელფასიდან აკლდება</th><th>კომენტარი</th><th>განახლება</th></tr></thead>
               <tbody id="advancesTable"></tbody>
             </table>
           </div>
+          <div class="note">თუ შეცდომით მიუთითე ავანსი, ქვემოთ პირდაპირ შეცვალე თარიღი / ტიპი / თანხა და დააჭირე "განახლება".</div>
         </div>
       </section>
 
       <section class="section" id="schedule">
         <div class="card">
-          <h2 class="section-title">გრაფიკის დამატება / შეცვლა</h2>
-          <div class="grid form">
-            <div class="field"><label>თანამშრომელი</label><select id="schEmployee"></select></div>
-            <div class="field"><label>თარიღი</label><input id="schDate" type="date" /></div>
-            <div class="field"><label>სტატუსი</label><select id="schStatus" onchange="toggleWorkTimeFields()"><option value="work">მუშაობს</option><option value="day_off">ისვენებს</option><option value="vacation">შვებულება</option><option value="excused_absence">საპატიო</option><option value="unexcused_absence">არასაპატიო</option></select></div>
-            <div class="field work-time"><label>დაწყება</label><input id="schStart" type="time" /></div>
-            <div class="field work-time"><label>დასრულება</label><input id="schEnd" type="time" /></div>
+          <div class="toolbar">
+            <h2 class="section-title">თვის გრაფიკი — inline რედაქტირება</h2>
+            <button class="btn dark" onclick="renderScheduleGrid()">გრაფიკის განახლება</button>
           </div>
-          <div class="field" style="margin-top:12px;"><label>კომენტარი</label><textarea id="schComment"></textarea></div>
-          <div style="margin-top:14px;"><button class="btn green" onclick="saveSchedule()">გრაფიკის შენახვა</button></div>
-          <div class="note">ცხრილში უჯრაზე დაჭერით ავტომატურად შეივსება თანამშრომელი და თარიღი.</div>
-        </div>
 
-        <div class="card">
-          <div class="toolbar"><h2 class="section-title">თვის გრაფიკი</h2><button class="btn dark" onclick="renderScheduleGrid()">გრაფიკის განახლება</button></div>
           <div class="legend">
             <span class="st-work">მ — მუშაობს</span>
             <span class="st-day_off">დ — ისვენებს</span>
@@ -640,6 +336,8 @@
             <span class="st-excused_absence">ს — საპატიო</span>
             <span class="st-unexcused_absence">ა — არასაპატიო</span>
           </div>
+
+          <div class="note">უჯრაზე დაჭერი. იქვე გამოჩნდება სტატუსი. თუ აირჩევ "მუშაობს", მიუთითე დრო მაგალითად 09:00 – 18:00.</div>
           <div class="schedule-wrap"><table class="schedule-table" id="scheduleGrid"></table></div>
         </div>
       </section>
@@ -688,20 +386,13 @@
       schedule: []
     };
 
+    let openScheduleCellKey = null;
+
     document.addEventListener("DOMContentLoaded", () => {
       const today = new Date();
       state.month = today.toISOString().slice(0, 7);
-
       document.getElementById("monthPicker").value = state.month;
-      document.getElementById("schDate").value = today.toISOString().slice(0, 10);
-
       bindNavigation();
-
-      document.getElementById("monthPicker").addEventListener("change", () => {
-        state.month = document.getElementById("monthPicker").value;
-        reloadAll();
-      });
-
       reloadAll();
     });
 
@@ -721,6 +412,12 @@
           if (window.innerWidth <= 760) document.getElementById("sidebar").classList.remove("open");
         });
       });
+
+      document.getElementById("monthPicker").addEventListener("change", () => {
+        state.month = document.getElementById("monthPicker").value;
+        openScheduleCellKey = null;
+        reloadAll();
+      });
     }
 
     function toggleSidebar() {
@@ -730,7 +427,6 @@
     async function reloadAll() {
       try {
         showLoader(true);
-
         const data = await apiGet("appData", { month: state.month });
 
         state.dashboard = data.dashboard || {};
@@ -752,7 +448,6 @@
       const url = new URL(API_URL);
       url.searchParams.set("action", action);
       Object.keys(params).forEach(key => url.searchParams.set(key, params[key]));
-
       const response = await fetch(url.toString());
       const data = await response.json();
       if (!data.success) throw new Error(data.error || "API შეცდომა");
@@ -764,7 +459,6 @@
         method: "POST",
         body: JSON.stringify({ action, data })
       });
-
       const result = await response.json();
       if (!result.success) throw new Error(result.error || "API შეცდომა");
       return result;
@@ -773,7 +467,6 @@
     function renderAll() {
       renderDashboard();
       renderEmployees();
-      renderEmployeeSelects();
       renderSalesForms();
       renderPayroll();
       renderAdvanceInputTable();
@@ -784,11 +477,13 @@
 
     function renderDashboard() {
       const s = state.dashboard || {};
-
       setText("dashTotalSales", money(s.total_sales));
       setText("dashGrossTotal", money(s.gross_total));
       setText("dashBankNet", money(s.bank_net_total));
       setText("dashEmployees", s.active_employees || 0);
+      setText("salesStoreLabel", money(state.sales.store_sales));
+      setText("salesOnlineLabel", money(state.sales.online_sales));
+      setText("salesTotalLabel", money(state.sales.total_sales));
 
       const tbody = document.getElementById("dashboardPayrollTable");
       tbody.innerHTML = state.payroll.map(row => `
@@ -817,6 +512,18 @@
       setValue("payStoreSalesInput", store || "");
       setValue("payOnlineSalesInput", online || "");
       setValue("payTotalSalesInput", money(total));
+
+      setText("paySumStore", money(store));
+      setText("paySumOnline", money(online));
+      setText("paySumTotal", money(total));
+    }
+
+    function focusSalesEdit(prefix) {
+      const el = document.getElementById(prefix + "StoreSalesInput");
+      if (el) {
+        el.focus();
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
     }
 
     function updateSalesTotalPreview(prefix) {
@@ -828,14 +535,12 @@
     async function saveSalesFrom(prefix) {
       try {
         showLoader(true);
-
         await apiPost("saveMonthlySales", {
           month: state.month,
           store_sales: val(prefix + "StoreSalesInput"),
           online_sales: val(prefix + "OnlineSalesInput"),
           comment: ""
         });
-
         toast("ნავაჭრი შენახულია / განახლდა ✅");
         await reloadAll();
       } catch (error) {
@@ -870,12 +575,6 @@
       `).join("");
     }
 
-    function renderEmployeeSelects() {
-      const active = state.employees.filter(emp => emp.status === "active");
-      const html = active.map(emp => `<option value="${escapeAttr(emp.employee_id)}">${escapeHtml(emp.full_name)}</option>`).join("");
-      document.getElementById("schEmployee").innerHTML = html;
-    }
-
     function renderPayroll() {
       const tbody = document.getElementById("payrollTable");
       const today = new Date().toISOString().slice(0, 10);
@@ -892,8 +591,8 @@
           <td><b>${money(row.gross_total)}</b></td>
           <td>${money(row.advance_total)}</td>
           <td><input class="mini-input" id="payAdvDate_${escapeAttr(row.employee_id)}" type="date" value="${today}" /></td>
-          <td><input class="mini-input" id="payAdvAmount_${escapeAttr(row.employee_id)}" type="number" step="0.01" placeholder="0" oninput="previewRowAdvance('pay','${escapeAttr(row.employee_id)}')" /></td>
-          <td><select class="mini-select" id="payAdvType_${escapeAttr(row.employee_id)}" onchange="previewRowAdvance('pay','${escapeAttr(row.employee_id)}')"><option value="cash">ხელზე</option><option value="bank">დარიცხვით</option></select></td>
+          <td><input class="mini-input" id="payAdvAmount_${escapeAttr(row.employee_id)}" type="number" step="0.01" placeholder="0" /></td>
+          <td><select class="mini-select" id="payAdvType_${escapeAttr(row.employee_id)}"><option value="cash">ხელზე</option><option value="bank">დარიცხვით</option></select></td>
           <td><input class="mini-input" type="number" step="0.01" value="${number(row.cash_given)}" onchange="updatePayrollField('${escapeAttr(row.employee_id)}','cash_given',this.value)" /></td>
           <td>${money(row.remaining_gross)}</td>
           <td>${money(row.pension_2_percent)}</td>
@@ -917,8 +616,8 @@
           <td><b>${escapeHtml(emp.full_name)}</b><br><small>${escapeHtml(emp.position || "")}</small></td>
           <td>${escapeHtml(emp.personal_number)}</td>
           <td><input class="mini-input" id="advDate_${escapeAttr(emp.employee_id)}" type="date" value="${today}" /></td>
-          <td><input class="mini-input" id="advAmount_${escapeAttr(emp.employee_id)}" type="number" step="0.01" placeholder="0" oninput="previewRowAdvance('adv','${escapeAttr(emp.employee_id)}')" /></td>
-          <td><select class="mini-select" id="advType_${escapeAttr(emp.employee_id)}" onchange="previewRowAdvance('adv','${escapeAttr(emp.employee_id)}')"><option value="cash">ხელზე</option><option value="bank">დარიცხვით</option></select></td>
+          <td><input class="mini-input" id="advAmount_${escapeAttr(emp.employee_id)}" type="number" step="0.01" placeholder="0" oninput="previewNewAdvance('${escapeAttr(emp.employee_id)}')" /></td>
+          <td><select class="mini-select" id="advType_${escapeAttr(emp.employee_id)}" onchange="previewNewAdvance('${escapeAttr(emp.employee_id)}')"><option value="cash">ხელზე</option><option value="bank">დარიცხვით</option></select></td>
           <td><b id="advReceived_${escapeAttr(emp.employee_id)}">0 ₾</b></td>
           <td id="advDeduct_${escapeAttr(emp.employee_id)}">0 ₾</td>
           <td><button class="btn small green" onclick="saveAdvanceForEmployee('adv','${escapeAttr(emp.employee_id)}')">შენახვა</button></td>
@@ -926,15 +625,12 @@
       `).join("");
     }
 
-    function previewRowAdvance(prefix, employeeId) {
-      const amount = number(val(prefix + "AdvAmount_" + employeeId));
-      const type = val(prefix + "AdvType_" + employeeId);
+    function previewNewAdvance(employeeId) {
+      const amount = number(val("advAmount_" + employeeId));
+      const type = val("advType_" + employeeId);
       const received = type === "bank" ? round2(amount * 0.98) : amount;
-
-      if (prefix === "adv") {
-        setText("advReceived_" + employeeId, money(received));
-        setText("advDeduct_" + employeeId, money(amount));
-      }
+      setText("advReceived_" + employeeId, money(received));
+      setText("advDeduct_" + employeeId, money(amount));
     }
 
     function renderAdvances() {
@@ -943,15 +639,48 @@
         <tr>
           <td><b>${escapeHtml(row.full_name_snapshot)}</b></td>
           <td>${escapeHtml(row.personal_number_snapshot)}</td>
-          <td>${formatDate(row.date)}</td>
-          <td>${row.advance_type === "bank" ? '<span class="badge info">დარიცხვით</span>' : '<span class="badge warn">ხელზე</span>'}</td>
-          <td>${money(row.advance_amount)}</td>
-          <td>${money(row.pension_2_percent)}</td>
-          <td><b>${money(row.employee_received)}</b></td>
-          <td>${money(row.salary_deduction)}</td>
-          <td>${escapeHtml(row.comment)}</td>
+          <td><input class="mini-input" id="editAdvDate_${escapeAttr(row.advance_id)}" type="date" value="${formatDate(row.date)}" /></td>
+          <td>
+            <select class="mini-select" id="editAdvType_${escapeAttr(row.advance_id)}" onchange="previewEditAdvance('${escapeAttr(row.advance_id)}')">
+              ${option("cash", "ხელზე", row.advance_type)}
+              ${option("bank", "დარიცხვით", row.advance_type)}
+            </select>
+          </td>
+          <td><input class="mini-input" id="editAdvAmount_${escapeAttr(row.advance_id)}" type="number" step="0.01" value="${number(row.advance_amount)}" oninput="previewEditAdvance('${escapeAttr(row.advance_id)}')" /></td>
+          <td><b id="editAdvReceived_${escapeAttr(row.advance_id)}">${money(row.employee_received)}</b></td>
+          <td id="editAdvDeduct_${escapeAttr(row.advance_id)}">${money(row.salary_deduction)}</td>
+          <td><input class="mini-input" id="editAdvComment_${escapeAttr(row.advance_id)}" value="${escapeAttr(row.comment || "")}" /></td>
+          <td><button class="btn small dark" onclick="updateAdvanceRow('${escapeAttr(row.advance_id)}')">განახლება</button></td>
         </tr>
       `).join("");
+    }
+
+    function previewEditAdvance(advanceId) {
+      const amount = number(val("editAdvAmount_" + advanceId));
+      const type = val("editAdvType_" + advanceId);
+      const received = type === "bank" ? round2(amount * 0.98) : amount;
+      setText("editAdvReceived_" + advanceId, money(received));
+      setText("editAdvDeduct_" + advanceId, money(amount));
+    }
+
+    async function updateAdvanceRow(advanceId) {
+      try {
+        showLoader(true);
+        await apiPost("updateAdvance", {
+          advance_id: advanceId,
+          month: state.month,
+          date: val("editAdvDate_" + advanceId),
+          advance_type: val("editAdvType_" + advanceId),
+          advance_amount: val("editAdvAmount_" + advanceId),
+          comment: val("editAdvComment_" + advanceId)
+        });
+        toast("ავანსი განახლდა ✅");
+        await reloadAll();
+      } catch (error) {
+        toast("შეცდომა: " + error.message);
+      } finally {
+        showLoader(false);
+      }
     }
 
     function renderAnalytics() {
@@ -1008,9 +737,12 @@
         html += `<tr><td>${escapeHtml(emp.full_name)}<br><small>${escapeHtml(emp.position || "")}</small></td>`;
 
         days.forEach(day => {
-          const rec = records[emp.employee_id + "|" + day.date];
+          const key = emp.employee_id + "|" + day.date;
+          const rec = records[key];
           const status = rec ? rec.status : "";
           const cls = status ? "st-" + status : "st-empty";
+          const cellId = makeCellId(emp.employee_id, day.date);
+          const open = openScheduleCellKey === cellId;
 
           if (status === "work") totals.work++;
           if (status === "day_off") totals.day_off++;
@@ -1019,9 +751,36 @@
           if (status === "unexcused_absence") totals.unexcused_absence++;
           totals.hours += number(rec ? rec.worked_hours : 0);
 
-          const title = rec ? `${statusLabel(status)} ${rec.start_time || ""}-${rec.end_time || ""} ${rec.comment || ""}` : "ცარიელი";
+          const currentStatus = rec ? rec.status : "day_off";
+          const startTime = rec ? (rec.start_time || "09:00") : "09:00";
+          const endTime = rec ? (rec.end_time || "18:00") : "18:00";
 
-          html += `<td><div class="schedule-cell ${cls}" title="${escapeAttr(title)}" onclick="pickScheduleCell('${escapeAttr(emp.employee_id)}','${escapeAttr(day.date)}')">${statusMark(status)}</div></td>`;
+          html += `
+            <td>
+              <div class="cell-wrap">
+                <div class="schedule-cell ${cls}" onclick="toggleCellEditor('${escapeAttr(emp.employee_id)}','${escapeAttr(day.date)}')">
+                  ${statusMark(status)}
+                </div>
+                <div class="cell-editor ${open ? 'open' : ''}" id="editor_${cellId}">
+                  <select id="st_${cellId}" onchange="toggleCellTime('${cellId}')">
+                    ${option("work", "მუშაობს", currentStatus)}
+                    ${option("day_off", "ისვენებს", currentStatus)}
+                    ${option("vacation", "შვებულება", currentStatus)}
+                    ${option("excused_absence", "საპატიო", currentStatus)}
+                    ${option("unexcused_absence", "არასაპატიო", currentStatus)}
+                  </select>
+                  <div class="cell-time-row" id="timewrap_${cellId}" style="display:${currentStatus === 'work' ? 'flex' : 'none'};">
+                    <input type="time" id="start_${cellId}" value="${startTime}" />
+                    <input type="time" id="end_${cellId}" value="${endTime}" />
+                  </div>
+                  <div style="margin-top:4px;display:flex;gap:4px;">
+                    <button class="btn tiny green" onclick="saveCellSchedule('${escapeAttr(emp.employee_id)}','${escapeAttr(day.date)}');event.stopPropagation()">OK</button>
+                    <button class="btn tiny gray" onclick="closeCellEditor();event.stopPropagation()">X</button>
+                  </div>
+                </div>
+              </div>
+            </td>
+          `;
         });
 
         html += `<td>${totals.work}</td><td>${round2(totals.hours)}</td><td>${totals.day_off}</td><td>${totals.vacation}</td><td>${totals.excused_absence}</td><td>${totals.unexcused_absence}</td></tr>`;
@@ -1031,26 +790,55 @@
       table.innerHTML = html;
     }
 
-    function pickScheduleCell(employeeId, date) {
-      setValue("schEmployee", employeeId);
-      setValue("schDate", date);
+    function makeCellId(employeeId, date) {
+      return (employeeId + "_" + date).replace(/[^a-zA-Z0-9_]/g, "_");
+    }
 
-      const existing = state.schedule.find(row => String(row.employee_id) === String(employeeId) && formatDate(row.date) === date);
+    function toggleCellEditor(employeeId, date) {
+      const cellId = makeCellId(employeeId, date);
+      openScheduleCellKey = openScheduleCellKey === cellId ? null : cellId;
+      renderScheduleGrid();
+    }
 
-      if (existing) {
-        setValue("schStatus", existing.status || "work");
-        setValue("schStart", existing.start_time || "");
-        setValue("schEnd", existing.end_time || "");
-        setValue("schComment", existing.comment || "");
-      } else {
-        setValue("schStatus", "work");
-        setValue("schStart", "");
-        setValue("schEnd", "");
-        setValue("schComment", "");
+    function closeCellEditor() {
+      openScheduleCellKey = null;
+      renderScheduleGrid();
+    }
+
+    function toggleCellTime(cellId) {
+      const status = val("st_" + cellId);
+      const box = document.getElementById("timewrap_" + cellId);
+      if (box) box.style.display = status === "work" ? "flex" : "none";
+    }
+
+    async function saveCellSchedule(employeeId, date) {
+      try {
+        showLoader(true);
+        const cellId = makeCellId(employeeId, date);
+        const status = val("st_" + cellId);
+        const start = val("start_" + cellId);
+        const end = val("end_" + cellId);
+
+        if (status === "work" && (!start || !end)) throw new Error("მუშაობისთვის მიუთითე დაწყება და დასრულება");
+
+        await apiPost("saveSchedule", {
+          month: state.month,
+          employee_id: employeeId,
+          date: date,
+          status: status,
+          start_time: status === "work" ? start : "",
+          end_time: status === "work" ? end : "",
+          comment: ""
+        });
+
+        openScheduleCellKey = null;
+        toast("გრაფიკი შენახულია ✅");
+        await reloadAll();
+      } catch (error) {
+        toast("შეცდომა: " + error.message);
+      } finally {
+        showLoader(false);
       }
-
-      toggleWorkTimeFields();
-      toast("გრაფიკის ფორმა შეივსო.");
     }
 
     function getScheduleTotalsByEmployee() {
@@ -1063,7 +851,6 @@
       state.schedule.forEach(row => {
         const id = row.employee_id;
         if (!grouped[id]) grouped[id] = { id, name: row.full_name_snapshot, work: 0, hours: 0, day_off: 0, vacation: 0, excused_absence: 0, unexcused_absence: 0 };
-
         if (row.status === "work") grouped[id].work++;
         if (row.status === "day_off") grouped[id].day_off++;
         if (row.status === "vacation") grouped[id].vacation++;
@@ -1154,7 +941,6 @@
     async function savePayrollRow(employeeId) {
       try {
         showLoader(true);
-
         const row = state.payroll.find(item => String(item.employee_id) === String(employeeId));
         if (!row) throw new Error("Payroll ჩანაწერი ვერ მოიძებნა");
 
@@ -1210,42 +996,6 @@
       }
     }
 
-    async function saveSchedule() {
-      try {
-        showLoader(true);
-
-        const data = {
-          month: state.month,
-          employee_id: val("schEmployee"),
-          date: val("schDate"),
-          status: val("schStatus"),
-          start_time: val("schStart"),
-          end_time: val("schEnd"),
-          comment: val("schComment")
-        };
-
-        if (!data.employee_id) throw new Error("აირჩიე თანამშრომელი");
-        if (!data.date) throw new Error("აირჩიე თარიღი");
-        if (data.status === "work" && (!data.start_time || !data.end_time)) throw new Error("მუშაობის დროს მიუთითე დაწყება და დასრულება");
-
-        await apiPost("saveSchedule", data);
-
-        toast("გრაფიკი შენახულია ✅");
-        await reloadAll();
-      } catch (error) {
-        toast("შეცდომა: " + error.message);
-      } finally {
-        showLoader(false);
-      }
-    }
-
-    function toggleWorkTimeFields() {
-      const status = val("schStatus");
-      document.querySelectorAll(".work-time").forEach(el => {
-        el.style.display = status === "work" ? "block" : "none";
-      });
-    }
-
     function getDaysInMonth(month) {
       const [year, mm] = month.split("-").map(Number);
       const monthIndex = mm - 1;
@@ -1272,15 +1022,6 @@
       return "";
     }
 
-    function statusLabel(status) {
-      if (status === "work") return "მუშაობს";
-      if (status === "day_off") return "ისვენებს";
-      if (status === "vacation") return "შვებულება";
-      if (status === "excused_absence") return "საპატიო";
-      if (status === "unexcused_absence") return "არასაპატიო";
-      return "";
-    }
-
     function salaryTypeLabel(value) {
       return value === "fixed_bonus" ? "ფიქსი + ბონუსი" : "მხოლოდ ფიქსი";
     }
@@ -1297,7 +1038,8 @@
     }
 
     function val(id) {
-      return document.getElementById(id).value;
+      const el = document.getElementById(id);
+      return el ? el.value : "";
     }
 
     function setValue(id, value) {
@@ -1328,7 +1070,6 @@
     function formatDate(value) {
       if (!value) return "";
       if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}/.test(value)) return value.slice(0, 10);
-
       const date = new Date(value);
       if (isNaN(date.getTime())) return String(value).slice(0, 10);
       return date.toISOString().slice(0, 10);
